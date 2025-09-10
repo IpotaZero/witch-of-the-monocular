@@ -1,0 +1,85 @@
+.door {
+    position: absolute;
+
+    width: 1.3em;
+    height: 2.5em;
+
+    border: whitesmoke 1px solid;
+
+    transform: translate(-50%, 0);
+
+    &:hover {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.item {
+    position: absolute;
+
+    font-size: 1em;
+
+    width: 4em;
+    height: 4em;
+
+    transform: translate(-50%, 0);
+
+    background-image: url(../assets/images/item.png);
+    background-size: cover;
+
+    animation: rotate 1.5s infinite steps(1, end);
+
+    &:hover {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: translate(-50%, 0) rotate(0);
+    }
+
+    50% {
+        transform: translate(-50%, 0) rotate(45deg);
+    }
+
+    100% {
+        transform: translate(-50%, 0) rotate(0);
+    }
+}
+
+.room-name {
+    position: absolute;
+
+    top: 1em;
+    right: 1em;
+
+    font-size: 6dvh;
+
+    &::before,
+    &::after {
+        content: "--";
+    }
+}
+
+.back {
+    position: absolute;
+
+    font-size: 4dvh;
+
+    bottom: 0;
+    width: 24em;
+    height: 2em;
+    border: whitesmoke 1px solid;
+
+    &:hover {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+.background {
+    position: absolute;
+    height: 100%;
+}

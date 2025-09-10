@@ -1,0 +1,49 @@
+<div class="page" id="first">
+    <div id="left" class="area">
+        <button data-link="back">戻る</button>
+        <span>問0-0</span>
+    </div>
+    <div id="center" class="area"></div>
+    <div id="right" class="area">
+        <button data-ms-in="0" data-link="retry">再挑戦</button>
+        <div>
+            <button class="fade-in" id="clear" data-link="clear">次へ</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    #first {
+        padding: 1em;
+
+        .area {
+            height: 100%;
+            display: flex;
+        }
+
+        & #left {
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+
+            & span {
+                font-size: 2em;
+            }
+        }
+
+        & #center {
+            flex: 2;
+        }
+
+        & #right {
+            flex: 1;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+
+            & span {
+                font-size: 2em;
+            }
+        }
+    }
+</style>

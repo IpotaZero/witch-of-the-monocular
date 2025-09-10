@@ -1,0 +1,57 @@
+<div class="page" id="first">
+    <h1>ひとやしきの<br />魔女</h1>
+
+    <div id="buttons">
+        <button data-link="start">始める</button>
+        <button data-link="how-to-play">遊び方</button>
+        <button data-link="credit">Credit</button>
+    </div>
+</div>
+
+<div class="page" id="how-to-play">
+    <button data-back="1">戻る</button>
+    <p>目標: 各マスの左上の数字と 中の数字を一致させる</p>
+    <p>緑の辺を クリックすることによって 空白マスへ スライドすることが出来る</p>
+</div>
+
+<div class="page" id="credit">
+    <button data-back="1">戻る</button>
+</div>
+
+<style>
+    .page {
+        padding: 1em;
+    }
+
+    h1 {
+        font-size: 12dvw;
+        font-weight: unset;
+        line-height: 0.9em;
+        height: 100%;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: left;
+
+        flex: 1;
+    }
+
+    #buttons {
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end;
+        gap: 1em;
+    }
+
+    #how-to-play {
+        flex-direction: column;
+        gap: 1em;
+
+        & p {
+            font-size: 2em;
+            align-self: center;
+            text-align: center;
+        }
+    }
+</style>

@@ -1,0 +1,177 @@
+.text-end::after {
+    content: "/";
+    animation: blink 1s steps(1, end) infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.fade-out {
+    animation: fade-out 1s steps(10, end) forwards;
+    opacity: 1;
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+.fade-in {
+    animation: fade-in 0.5s forwards;
+    opacity: 0;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.move-right {
+    animation: move-right 1s steps(10, end) forwards;
+}
+
+@keyframes move-right {
+    from {
+        transform: translateX(-1em);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+.move-up {
+    animation: move-up 1s steps(10, end) forwards;
+}
+
+@keyframes move-up {
+    from {
+        transform: translateY(0.1em);
+    }
+
+    to {
+        transform: translateY(0);
+    }
+}
+
+.shake {
+    animation: shake 1s infinite;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(0, 0);
+    }
+    10% {
+        transform: translate(-0.2dvh, 0.3dvh);
+    }
+    20% {
+        transform: translate(0.3dvh, -0.2dvh);
+    }
+    30% {
+        transform: translate(-0.3dvh, -0.1dvh);
+    }
+    40% {
+        transform: translate(0.1dvh, 0.3dvh);
+    }
+    50% {
+        transform: translate(-0.2dvh, -0.3dvh);
+    }
+    60% {
+        transform: translate(0.3dvh, 0.1dvh);
+    }
+    70% {
+        transform: translate(-0.1dvh, -0.2dvh);
+    }
+    80% {
+        transform: translate(0.2dvh, 0.3dvh);
+    }
+    90% {
+        transform: translate(-0.3dvh, 0.1dvh);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@property --theta {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+.yurayura {
+    animation: theta 0.5s linear infinite;
+    transform: translate(calc(sin(var(--theta) * 3) * 0.2dvh), calc(sin(var(--theta) * 2) * 0.2dvh));
+}
+
+@keyframes theta {
+    from {
+        --theta: 0deg;
+    }
+
+    to {
+        --theta: 360deg;
+    }
+}
+
+.enter {
+    animation: enter 1s forwards;
+}
+
+.enter-back {
+    animation: enter 0.8s reverse forwards;
+}
+
+@keyframes enter {
+    from {
+        opacity: 0;
+        scale: 0;
+    }
+
+    to {
+        opacity: 1;
+        scale: 1;
+    }
+}
+
+.exit {
+    animation: exit 1s forwards;
+}
+
+.exit-back {
+    animation: exit 0.8s reverse forwards;
+}
+
+@keyframes exit {
+    from {
+        opacity: 1;
+        scale: 1;
+    }
+
+    to {
+        opacity: 0;
+        scale: 3;
+    }
+}

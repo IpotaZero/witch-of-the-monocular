@@ -1,0 +1,73 @@
+.vertex {
+    position: absolute;
+
+    width: 4em;
+    height: 4em;
+    background-color: #111;
+
+    transform: translate(-50%, -50%);
+
+    z-index: 100;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: whitesmoke 1px solid;
+}
+
+input {
+    width: 1em;
+    background: none;
+    border: none;
+    color: whitesmoke;
+
+    text-align: center;
+
+    pointer-events: none;
+
+    &.answer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin-top: 0.08em;
+    }
+
+    &.value {
+        position: fixed;
+        font-size: 2em;
+        /* margin-top: 0.08em; */
+
+        transition: left 0.8s ease-in-out, top 0.8s ease-in-out;
+
+        &.imm {
+            transition: none;
+        }
+
+        z-index: 100;
+    }
+
+    /* color: oklch(100% 0.7 calc(var(--value) * 60)); */
+}
+
+polyline {
+    color: gray;
+
+    &.available {
+        color: rgb(44, 255, 135);
+
+        &.hovered {
+            color: rgb(255, 47, 0);
+        }
+    }
+}
+
+line {
+    &.available {
+        cursor: pointer;
+    }
+}
+
+#arrow-end {
+    color: whitesmoke;
+}
