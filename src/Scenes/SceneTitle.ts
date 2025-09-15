@@ -1,4 +1,5 @@
 import { Dom } from "../Dom"
+import { LocalStorage } from "../LocalStorage"
 import { Pages } from "../utils/Pages"
 import { Scene } from "./Scene"
 import { Scenes } from "./Scenes"
@@ -17,8 +18,18 @@ export class SceneTitle extends Scene {
         await this.#pages.load(Dom.container, html)
 
         this.#pages.on("start", async () => {
-            const { SceneAdventure } = await import("./SceneAdventure")
+            // @ts-ignore
+            const modules = import.meta.glob("./SceneAdventure*")
+
+            const url = `./SceneAdventure${LocalStorage.getChapter()}.ts`
+
+            const { SceneAdventure } = await modules[url]()
             await Scenes.goto(() => new SceneAdventure(), { msIn: 400, msOut: 800 })
+        })
+
+        const past = this.#pages.pages.get("past")!
+        LocalStorage.getClearedStageId().forEach((id) => {
+            past.innerHTML += `<button>${id}</button>`
         })
     }
 }

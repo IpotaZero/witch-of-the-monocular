@@ -5,10 +5,10 @@ export default defineConfig({
     build: {
         target: ["esnext"],
         rollupOptions: {
-            input: "src/run.ts", // run.jsのパス
+            input: "src/run.ts",
             output: {
                 entryFileNames: "run.js",
-                dir: "dist",
+                dir: "dist/module",
             },
         },
         sourcemap: true,

@@ -16,7 +16,7 @@ interface Point {
 export class Connector {
     static #defaultOption: ConnectorOptions = {
         color: "black",
-        width: 4,
+        width: 6,
         anchorA: "center",
         anchorB: "center",
         arrow: false,

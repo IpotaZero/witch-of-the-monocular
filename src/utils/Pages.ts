@@ -1,13 +1,13 @@
 import { Awaits } from "./Awaits"
 
 type Handler = (pages: Pages) => void
-type BeforeHandler = (pages: Pages) => boolean | void
+type BeforeHandler = (pages: Pages) => Promise<boolean | void>
 
 type FadeOption = Partial<{ msIn: number; msOut: number; back: boolean }>
 
 export class Pages {
-    defaultMSIn = 800
-    defaultMSOut = 800
+    defaultMSIn = 700
+    defaultMSOut = 700
 
     readonly pages = new RegExpDict<HTMLElement>({})
 
@@ -18,7 +18,7 @@ export class Pages {
     #container!: HTMLElement
     #currentBranch: string[] = []
 
-    #currentPageId = "first"
+    #currentPageId = "絶対に存在しないページID"
 
     async load(container: HTMLElement, html: string, { history }: { history?: string[] } = {}) {
         this.#container = container
@@ -77,32 +77,30 @@ export class Pages {
     }
 
     updateButtons() {
-        this.pages.getValues().forEach((page) => {
-            ;[...page.querySelectorAll("button")]
-                .filter((b) => !b.classList.contains("non-page"))
-                .forEach((button, i) => {
-                    let msIn: number
+        Array.from(this.#container.querySelectorAll("button"))
+            .filter((b) => !b.classList.contains("non-page"))
+            .forEach((button, i) => {
+                let msIn: number
 
-                    if (button.hasAttribute("data-ms-in")) {
-                        msIn = Number(button.getAttribute("data-ms-in"))
-                    }
+                if (button.hasAttribute("data-ms-in")) {
+                    msIn = Number(button.getAttribute("data-ms-in"))
+                }
 
+                button.onclick = () => {
+                    this.goto(button.dataset["link"]!, {
+                        msIn,
+                        back: button.classList.contains("back"),
+                    })
+                }
+
+                const back = button.getAttribute("data-back")
+
+                if (back) {
                     button.onclick = () => {
-                        this.goto(button.dataset["link"]!, {
-                            msIn,
-                            back: button.classList.contains("back"),
-                        })
+                        this.back(Number(back), { msIn })
                     }
-
-                    const back = button.getAttribute("data-back")
-
-                    if (back) {
-                        button.onclick = () => {
-                            this.back(Number(back), { msIn })
-                        }
-                    }
-                })
-        })
+                }
+            })
     }
 
     async back(backDepth: number, { msIn, msOut }: FadeOption = {}) {
@@ -122,11 +120,9 @@ export class Pages {
     }
 
     async goto(id: string, { msIn = this.defaultMSIn, msOut = this.defaultMSOut, back = false }: FadeOption = {}) {
-        if (this.#beforeHandlers.getAll(id).some((handler) => handler(this))) return
-
+        if (await this.#runBefore(id)) return
         this.#disableButtons()
-
-        this.#leftHandlers.getAll(this.#currentPageId).forEach((handler) => handler(this))
+        this.#runLeft(this.#currentPageId)
 
         const from = this.pages.get(this.#currentPageId)
         const to = this.pages.get(id)
@@ -134,31 +130,74 @@ export class Pages {
         this.#currentPageId = id
         this.#currentBranch.push(id)
 
+        await this.#fadeIn(msIn, from, to, back)
+
+        this.#runOn(this.#currentPageId)
+    }
+
+    async #fadeIn(msIn: number, from: HTMLElement | undefined, to: HTMLElement | undefined, back: boolean) {
         to?.classList.remove("hidden")
 
         if (msIn > 0) {
-            if (back) {
-                to && Awaits.exitReverse(to, msIn)
-                from && Awaits.enterReverse(from, msIn)
-            } else {
-                to && Awaits.enter(to, msIn)
-                from && Awaits.exit(from, msIn)
+            const fromLayerNum = Number(from?.getAttribute("data-layer")) || 0
+            const toLayerNum = Number(to?.getAttribute("data-layer")) || 0
+
+            if (fromLayerNum <= toLayerNum) {
+                this.#fade(to, back, msIn, true)
+            }
+
+            if (fromLayerNum >= toLayerNum) {
+                this.#fade(from, back, msIn, false)
             }
 
             await Awaits.sleep(msIn)
-        }
 
-        requestAnimationFrame(() => {
-            this.#handlers.getAll(this.#currentPageId).forEach((handler) => handler(this))
-            this.#ableButtons()
-        })
-
-        if (from !== to) {
-            from?.classList.add("hidden")
+            if (fromLayerNum >= toLayerNum) {
+                from?.classList.add("hidden")
+            }
         }
     }
 
+    #fade(page: HTMLElement | undefined, back: boolean, msIn: number, to: boolean) {
+        if (to) {
+            if (back) {
+                page && Awaits.exitReverse(page, msIn)
+            } else {
+                page && Awaits.enter(page, msIn)
+            }
+        } else {
+            if (back) {
+                page && Awaits.enterReverse(page, msIn)
+            } else {
+                page && Awaits.exit(page, msIn)
+            }
+        }
+    }
+
+    async #runBefore(id: string) {
+        const before = this.#beforeHandlers
+            .getAll(id)
+            .map((handler) => handler(this))
+            .toArray()
+
+        const p = await Promise.all(before)
+
+        return p.some(Boolean)
+    }
+
+    #runLeft(id: string) {
+        this.#leftHandlers.getAll(id).forEach((handler) => handler(this))
+    }
+
+    #runOn(id: string) {
+        requestAnimationFrame(() => {
+            this.#handlers.getAll(id).forEach((handler) => handler(this))
+            this.#ableButtons()
+        })
+    }
+
     #disableButtons() {
+        this.#container.style.pointerEvents = "none"
         this.pages.getValues().forEach((page) => page.querySelectorAll("button").forEach((b) => (b.disabled = true)))
     }
 
@@ -167,6 +206,8 @@ export class Pages {
             .getValues()
             .filter((page) => !page.classList.contains("hidden"))
             .forEach((page) => page.querySelectorAll("button").forEach((b) => (b.disabled = false)))
+
+        this.#container.style.pointerEvents = ""
     }
 }
 

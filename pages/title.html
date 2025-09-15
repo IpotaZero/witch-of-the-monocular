@@ -3,15 +3,31 @@
 
     <div id="buttons">
         <button data-link="start">始める</button>
+        <button data-link="past">今までの</button>
         <button data-link="how-to-play">遊び方</button>
         <button data-link="credit">Credit</button>
     </div>
 </div>
 
-<div class="page" id="how-to-play">
+<div class="page" id="past">
     <button data-back="1">戻る</button>
-    <p>目標: 各マスの左上の数字と 中の数字を一致させる</p>
-    <p>緑の辺を クリックすることによって 空白マスへ スライドすることが出来る</p>
+</div>
+
+<div class="page" id="how-to-play">
+    <h2>遊び方</h2>
+    <section>
+        <h3>探索</h3>
+        <p>様々な場所をクリックしてアイテムを探す。</p>
+        <p>全てのアイテムを手に入れる必要はない。</p>
+    </section>
+
+    <section>
+        <h3>パズル</h3>
+        <p>目標: 各マスの左上の数字と中の数字を一致させる。</p>
+        <p>緑の辺をクリックすることによって空白マスへスライドすることが出来る。</p>
+    </section>
+
+    <button data-back="1">戻る</button>
 </div>
 
 <div class="page" id="credit">
@@ -24,7 +40,7 @@
     }
 
     h1 {
-        font-size: 12dvw;
+        font-size: min(45dvh, 13dvw);
         font-weight: unset;
         line-height: 0.9em;
         height: 100%;
@@ -49,9 +65,24 @@
         gap: 1em;
 
         & p {
-            font-size: 2em;
             align-self: center;
             text-align: center;
+        }
+    }
+
+    [data-back] {
+        position: absolute;
+        left: 1em;
+        top: 1em;
+        font-size: 6dvh;
+    }
+
+    #past {
+        flex-direction: column;
+        align-items: flex-start;
+
+        & button {
+            padding: 0.5em;
         }
     }
 </style>
