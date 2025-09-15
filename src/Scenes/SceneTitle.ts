@@ -1,5 +1,5 @@
 import { Dom } from "../Dom"
-import { LocalStorage } from "../LocalStorage"
+import { Item, LocalStorage } from "../LocalStorage"
 import { Pages } from "../utils/Pages"
 import { Scene } from "./Scene"
 import { Scenes } from "./Scenes"
@@ -29,7 +29,19 @@ export class SceneTitle extends Scene {
 
         const past = this.#pages.pages.get("past")!
         LocalStorage.getClearedStageId().forEach((id) => {
-            past.innerHTML += `<button>${id}</button>`
+            past.innerHTML += `<button data-link="${id}">${id}</button>`
         })
+
+        const stages: Item[] = ["1階のカギ"]
+
+        stages.forEach((item) => {
+            this.#pages.before(item, async () => {
+                const { SceneGame } = await import("./SceneGame")
+                await Scenes.goto(() => new SceneGame(item, { from: "title" }), { mode: "fade" })
+                return true
+            })
+        })
+
+        this.#pages.updateButtons()
     }
 }

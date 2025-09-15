@@ -16,7 +16,7 @@ export class SceneAdventure extends Scene {
     }
 
     async end(): Promise<void> {
-        LocalStorage.setCurrentBranch(this.#pages.currentBranch.slice(0, -1))
+        LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
     }
 
     async #setup() {
@@ -62,16 +62,20 @@ export class SceneAdventure extends Scene {
 
         getItem.forEach((item) => {
             this.#pages.before("get-" + item, async () => {
+                this.#pages.shaveBranch(1)
+
                 const { SceneGame } = await import("./SceneGame")
-                await Scenes.goto(() => new SceneGame(item), { mode: "fade" })
+                await Scenes.goto(() => new SceneGame(item, { from: "adventure" }), { mode: "fade" })
 
                 return true
             })
         })
 
         this.#pages.before("get-1階のカギ", async (page) => {
+            this.#pages.shaveBranch(1)
+
             const { SceneGame } = await import("./SceneGame")
-            await Scenes.goto(() => new SceneGame("1階のカギ"), { mode: "fade" })
+            await Scenes.goto(() => new SceneGame("1階のカギ", { from: "adventure" }), { mode: "fade" })
             Serif.say(
                 "さて、ではこの魔法陣の説明をしよう。",
                 "各マスの中に2つ数字があるのが見えるかな?",
@@ -89,6 +93,8 @@ export class SceneAdventure extends Scene {
                 LocalStorage.addItem(item)
                 this.#update()
                 page.back(1, { msIn: 0, msOut: 0 })
+
+                Serif.say(item + "を手に入れた。")
             })
         })
 
@@ -145,6 +151,16 @@ export class SceneAdventure extends Scene {
             }
         })
 
+        this.#pages.before("title", async () => {
+            this.#pages.shaveBranch(1)
+
+            const { SceneTitle } = await import("./SceneTitle")
+
+            await Scenes.goto(() => new SceneTitle())
+
+            return true
+        })
+
         const html = await (await fetch("pages/adventure0.html")).text()
         await this.#pages.load(Dom.container, html, { history: LocalStorage.getCurrentBranch() })
 
@@ -169,8 +185,6 @@ export class SceneAdventure extends Scene {
         LocalStorage.setChapter(1)
 
         // const {SceneAdventure} = await import("./")
-
-        return true
     }
 
     #update() {
@@ -200,14 +214,17 @@ export class SceneAdventure extends Scene {
             })
         })
 
-        qs("空のバケツ", LocalStorage.getItems().includes("水の入ったバケツ"))
+        qs(
+            "空のバケツ",
+            LocalStorage.getItems().includes("空のバケツ") || LocalStorage.getItems().includes("水の入ったバケツ"),
+        )
         qs("階段-不", LocalStorage.getFlags().includes("ツタを切った"))
         qs("階段-可", !LocalStorage.getFlags().includes("ツタを切った"))
 
         this.#pages.updateButtons()
 
         Dom.container.querySelector<HTMLElement>("#update")!.onclick = async () => {
-            LocalStorage.setCurrentBranch(this.#pages.currentBranch)
+            LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
             this.#setup()
         }
     }

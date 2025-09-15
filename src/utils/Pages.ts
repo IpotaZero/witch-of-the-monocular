@@ -37,15 +37,12 @@ export class Pages {
         this.updateButtons()
     }
 
-    get currentBranch() {
-        return this.#currentBranch
+    shaveBranch(num: number) {
+        this.#currentBranch = this.#currentBranch.slice(0, -num)
     }
 
-    set currentBranch(branch: string[]) {
-        if (branch.length === 0) return
-
-        this.#currentBranch = branch.slice(0, -1)
-        this.goto(branch.at(-1)!)
+    getCurrentBranch() {
+        return [...this.#currentBranch]
     }
 
     on(selector: string, handler: Handler) {

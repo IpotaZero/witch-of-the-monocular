@@ -11,8 +11,12 @@ export class SceneGame extends Scene {
     #pages = new Pages()
     #game!: Game
 
-    constructor(id: Item) {
+    #from: "title" | "adventure"
+
+    constructor(id: Item, { from }: { from: "title" | "adventure" }) {
         super()
+
+        this.#from = from
 
         this.ready = this.#setup(id)
     }
@@ -43,6 +47,14 @@ export class SceneGame extends Scene {
     }
 
     async #return() {
+        if (this.#from === "title") {
+            const { SceneTitle } = await import("./SceneTitle")
+
+            await Scenes.goto(() => new SceneTitle())
+
+            return
+        }
+
         // @ts-ignore
         const modules = import.meta.glob("./SceneAdventure*")
 
