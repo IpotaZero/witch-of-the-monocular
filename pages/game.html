@@ -16,7 +16,7 @@
     #first {
         padding: 1em;
 
-        .area {
+        & .area {
             height: 100%;
             display: flex;
         }
@@ -26,13 +26,26 @@
             flex-direction: column;
             justify-content: space-between;
 
-            & span {
-                font-size: 2em;
+            & #stage-id {
+                font-size: 1em;
             }
         }
 
         & #center {
             flex: 2;
+
+            & .vertex {
+                font-size: 4dvh;
+            }
+
+            & .value {
+                transform: translate(-50%, -50%);
+                font-size: 8dvh;
+            }
+
+            & .answer {
+                font-size: 5dvh;
+            }
         }
 
         & #right {

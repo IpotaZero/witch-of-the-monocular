@@ -80,8 +80,8 @@ export class Game {
         this.#vertexValueElements.forEach((i, j) => {
             const r = this.$vertices[this.#state.indexOf(j)].getBoundingClientRect()
 
-            i.style.left = `${r.left + r.width / 4}px`
-            i.style.top = `${r.top + r.height / 4}px`
+            i.style.left = `${r.left + r.width / 2}px`
+            i.style.top = `${r.top + r.height / 2}px`
         })
     }
 
