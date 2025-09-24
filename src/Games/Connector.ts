@@ -53,15 +53,15 @@ export class Connector {
         marker.setAttribute("orient", "auto")
         marker.setAttribute("markerWidth", "4")
         marker.setAttribute("markerHeight", "4")
-        marker.setAttribute("refX", "1")
+        marker.setAttribute("refX", "2.3")
         marker.setAttribute("refY", "2")
 
         const path = document.createElementNS(svg.namespaceURI, "path")
         path.setAttribute(
             "d",
-            `M 0 0
-             Q 2 1.3, 4 2
-             Q 2 2.7, 0 4
+            `M 4 0
+             Q 2 1.3, 0 2
+             Q 2 2.7, 4 4
              Z`,
         )
         path.setAttribute("fill", "currentColor")

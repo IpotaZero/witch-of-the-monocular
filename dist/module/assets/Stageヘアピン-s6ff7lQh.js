@@ -1,0 +1,2 @@
+import{G as o,C as c}from"./Game-Dbs3negb.js";class a extends o{$setupElement(i){this.$defaultState=[3,4,1,2,0];for(let t=0;t<5;t++){const e=[-Math.cos(Math.PI*2*t/5)*28,Math.sin(Math.PI*2*t/5)*28],s=this.$createVertex(e[1],e[0],t);this.$vertices.push(s),i.appendChild(s)}for(let t=0;t<this.$vertices.length;t++)for(let e=t+1;e<this.$vertices.length;e++){const s=(e-t-1)%5===0,r=new c(this.$vertices[t],this.$vertices[e],{width:6,arrow:s});this.$connectors.set(r,[t,e])}}}export{a as Stage};
+//# sourceMappingURL=Stageヘアピン-s6ff7lQh.js.map
