@@ -1,0 +1,240 @@
+<div class="page" id="first">
+    <img src="assets/images/stages/2階.png" alt="" class="background" />
+
+    <button class="door" data-link="風呂" style="left: 0%; top: 35%; height: 55%; width: 18%"></button>
+    <button class="door" data-link="トイレ" style="left: 23%; top: 40%; height: 50%; width: 10%"></button>
+    <button class="door" data-link="寝室" style="left: 36%; top: 45%; height: 30%; width: 6%"></button>
+    <button class="door" data-link="書斎" style="left: 57%; top: 45%; height: 40%; width: 10%"></button>
+
+    <span class="room-name">2階</span>
+</div>
+
+<div class="page" id="風呂">
+    <img src="assets/images/stages/お風呂.png" alt="" class="background" />
+
+    <button class="serif" data-link="湯舟" style="left: 0%; top: 50%; height: 45%; width: 55%"></button>
+
+    <button class="item" data-link="ヘアピン" style="left: 70%; top: 65%; height: 5%; width: 5%">
+        <img src="assets/images/ヘアピン.png" alt="" />
+    </button>
+
+    <button class="item" data-link="石鹸" style="left: 75%; top: 50%; height: 20%; width: 20%">
+        <img src="assets/images/石鹸.png" alt="" />
+    </button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">風呂</span>
+</div>
+
+<div class="page" id="ヘアピン">
+    <img src="assets/images/stages/ヘアピン.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-ヘアピン" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
+<div class="page" id="トイレ">
+    <img src="assets/images/stages/トイレ.png" alt="" class="background" />
+
+    <button class="serif" data-link="おトイレ" style="left: 40%; top: 30%; height: 45%; width: 25%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">トイレ</span>
+</div>
+
+<div class="page" id="書斎">
+    <img src="assets/images/stages/書斎.png" alt="" class="background" />
+
+    <button class="door" data-link="書斎奥" style="left: 40%; top: 35%; height: 55%; width: 18%"></button>
+
+    <button class="door" data-link="魔導書" style="left: 45%; top: 15%; height: 60%; width: 40%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">書斎</span>
+</div>
+
+<div class="page" id="魔導書">
+    <img src="assets/images/stages/魔導書.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-魔導書" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
+<div class="page" id="書斎奥">
+    <img src="assets/images/stages/書斎奥.png" alt="" class="background" />
+
+    <button class="door" data-link="ぬるついたハンマー" style="left: 55%; top: 65%; height: 25%; width: 30%"></button>
+    <button class="serif" data-link="本棚" style="left: 5%; top: 20%; height: 70%; width: 40%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+    <span class="room-name">書斎</span>
+</div>
+
+<div class="page" id="ぬるついたハンマー">
+    <img src="assets/images/stages/ハンマー.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-ぬるついたハンマー" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
+<div class="page" id="寝室">
+    <img src="assets/images/stages/寝室.png" alt="" class="background" />
+
+    <button class="door" data-link="窓" style="left: 40%; top: 40%; height: 25%; width: 40%"></button>
+
+    <button class="door" data-link="ベッド" style="left: 60%; top: 60%; height: 35%; width: 50%"></button>
+    <button class="door" data-link="ベッド下" style="left: 90%; top: 90%; height: 35%; width: 50%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">寝室</span>
+</div>
+
+<div class="page" id="ベッド下">
+    <img src="assets/images/stages/ベッド下.png" alt="" class="background" />
+
+    <button class="item" data-link="薄い本" style="left: 60%; top: 60%; height: 35%; width: 50%">
+        <img src="assets/images/ウ=ス異本.png" alt="" />
+    </button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">寝室</span>
+</div>
+
+<div class="page" id="薄い本">
+    <img src="assets/images/stages/薄い本.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-薄い本" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
+<button id="update">UPDATE</button>
+
+<button id="pause-button" data-link="pause">≡</button>
+
+<div class="page" id="pause" data-layer="1">
+    <div id="buttons">
+        <button data-back="1">再開</button>
+        <button data-link="item">アイテム</button>
+        <button data-link="title">タイトルへ</button>
+    </div>
+</div>
+
+<div class="page" id="item" data-layer="1">
+    <button data-back="1">戻る</button>
+</div>
+
+<div id="cover"></div>
+
+<style>
+    #container {
+        height: 100%;
+        width: auto;
+        aspect-ratio: 16/10;
+    }
+
+    .page {
+        font-size: 6dvh;
+        padding: 1em;
+
+        height: 100%;
+        width: 100%;
+    }
+
+    #first:not(.hidden) ~ #back {
+        display: none;
+    }
+
+    #item-0 {
+        flex-direction: column;
+
+        & .options {
+            display: flex;
+            gap: 1em;
+        }
+    }
+
+    .options {
+        display: flex;
+
+        z-index: 3;
+
+        gap: 2em;
+
+        background-color: #1118;
+
+        padding: 0.5em;
+    }
+
+    #cover {
+        box-shadow: inset 0px -6vh 12dvh 6dvh #111;
+        pointer-events: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    #pause-button {
+        position: absolute;
+        left: 1em;
+        top: 1em;
+        border: whitesmoke 1px solid;
+
+        padding: 0.1em;
+
+        background-color: #111c;
+    }
+
+    #pause {
+        z-index: 10;
+        background-color: #111e;
+        justify-content: flex-start;
+
+        #buttons {
+            display: flex;
+            flex-direction: column;
+            align-self: flex-start;
+
+            /* border: whitesmoke 1px solid; */
+            padding: 0.5em;
+        }
+    }
+
+    #item {
+        z-index: 10;
+        background-color: #111e;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 1em;
+
+        & [data-back] {
+            position: absolute;
+            top: 1em;
+            left: 1em;
+        }
+    }
+
+    #update {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        color: whitesmoke;
+
+        z-index: 100000;
+    }
+</style>

@@ -1,5 +1,6 @@
 import { Dom } from "../Dom"
 import { Item, LocalStorage } from "../LocalStorage"
+import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
 import { Serif } from "../utils/Serif"
 import { Scene } from "./Scene"
@@ -20,6 +21,19 @@ export class SceneAdventure extends Scene {
     }
 
     async #setup() {
+        this.#pages.on("first", async () => {
+            if (LocalStorage.getFlags().includes("あらすじ")) return
+            LocalStorage.addFlag("あらすじ")
+
+            Serif.say(
+                '(森の中にある洋館、通称"ひとやしき"にはある噂があった。)',
+                "(そこには恐ろしい魔女がいて、一度入れば決して出てこられないというもの。)",
+                "(あなたは最近この辺りに引っ越してきたばかりでその噂を知らず、森の中で迷った挙句その屋敷に入ってしまったのであった......。)",
+            )
+
+            await Serif.wait()
+        })
+
         this.#pages.on("room-0", () => {
             if (LocalStorage.getFlags().includes("met")) return
             LocalStorage.addFlag("met")
@@ -48,14 +62,6 @@ export class SceneAdventure extends Scene {
                 "すべての道具を使う必要はないかもしれないけど、見つけたものは持っていって構わないよ。",
                 "まあ百聞は一見に如かず。一緒に解いてみよう!",
             )
-        })
-
-        this.#pages.on("包丁", (page) => {
-            Serif.say("(包丁。)")
-        })
-
-        this.#pages.on("ライター", (page) => {
-            Serif.say("(ライター。)")
         })
 
         const getItem: Item[] = ["1階のカギ", "包丁", "ライター", "空のバケツ"]
@@ -94,7 +100,7 @@ export class SceneAdventure extends Scene {
                 this.#update()
                 page.back(1, { msIn: 0, msOut: 0 })
 
-                Serif.say(item + "を手に入れた。")
+                Serif.say(`(${item}を手に入れた。)`)
             })
         })
 
@@ -135,6 +141,8 @@ export class SceneAdventure extends Scene {
 
             if (items.includes("ライター") && items.includes("水の入ったバケツ")) {
                 Serif.say("(ツタを燃やしてバケツの水で消火した。)")
+                LocalStorage.removeItem("水の入ったバケツ")
+                LocalStorage.addItem("空のバケツ")
                 LocalStorage.addFlag("ツタを切った")
                 await Serif.wait()
                 this.#nextChapter()
@@ -164,11 +172,18 @@ export class SceneAdventure extends Scene {
         const html = await (await fetch("pages/adventure0.html")).text()
         await this.#pages.load(Dom.container, html, { history: LocalStorage.getCurrentBranch() })
 
+        const serifMap: Record<string, string[]> = {
+            "観葉植物": ["(観葉植物。)", "日当たりが悪くてげっそりしてるけど、世話はしてるよ。"],
+            "手が届かない": ["(手が届かない。)", "そこには何もないと思うよ。"],
+            "皿が入っている": ["(皿が入っている。)"],
+            "絵": ["(冒涜的な何かを感じる絵。)", "これはね、神様だよ。"],
+        }
+
         Dom.container.querySelectorAll(".serif").forEach((b) => {
             const serif = b.getAttribute("data-link")!
 
             this.#pages.before(serif, async () => {
-                Serif.say(serif)
+                Serif.say(...serifMap[serif])
                 await Serif.wait()
                 return true
             })
@@ -181,10 +196,12 @@ export class SceneAdventure extends Scene {
         this.#update()
     }
 
-    #nextChapter() {
+    async #nextChapter() {
         LocalStorage.setChapter(1)
+        this.#pages.shaveBranch(4)
 
-        // const {SceneAdventure} = await import("./")
+        const { SceneAdventure } = await import("./SceneAdventure1")
+        Scenes.goto(() => new SceneAdventure())
     }
 
     #update() {
@@ -192,11 +209,11 @@ export class SceneAdventure extends Scene {
             Dom.container.querySelector<HTMLElement>(`[data-link="${link}"]`)?.classList.toggle("hidden", hidden)
 
         const itemSerif: Partial<Record<Item, string>> = {
-            "1階のカギ": "玄関のすぐ奥の扉の鍵。......2重扉?",
-            "包丁": "軽くて扱いやすい包丁。",
-            "ライター": "よくあるライター。オイルは十分",
-            "空のバケツ": "何の変哲もないバケツ。",
-            "水の入ったバケツ": "水の入ったバケツ。地味に重い。",
+            "1階のカギ": "(玄関のすぐ奥の扉の鍵。......2重扉?)",
+            "包丁": "(軽くて扱いやすい包丁。)",
+            "ライター": "(よくあるライター。オイルは十分)",
+            "空のバケツ": "(何の変哲もないバケツ。)",
+            "水の入ったバケツ": "(水の入ったバケツ。地味に重い。)",
         }
 
         ;[...Dom.container.querySelector("#item")!.children]

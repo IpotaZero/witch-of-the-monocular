@@ -1,6 +1,7 @@
 import { Dom } from "../Dom"
 import { Game } from "../Games/Game"
 import { Item, LocalStorage } from "../LocalStorage"
+import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
 import { Scene } from "./Scene"
 import { Scenes } from "./Scenes"
@@ -29,6 +30,8 @@ export class SceneGame extends Scene {
         const html = await (await fetch("pages/game.html")).text()
         await this.#pages.load(Dom.container, html)
 
+        BGM.ffp("assets/sounds/puzzle.mp3", { loopStartS: 17.297 })
+
         this.#pages.on("back", async () => {
             this.#return()
         })
@@ -50,7 +53,7 @@ export class SceneGame extends Scene {
         if (this.#from === "title") {
             const { SceneTitle } = await import("./SceneTitle")
 
-            await Scenes.goto(() => new SceneTitle())
+            await Scenes.goto(() => new SceneTitle(["first", "past"]))
 
             return
         }
@@ -64,7 +67,7 @@ export class SceneGame extends Scene {
         await Scenes.goto(() => new SceneAdventure())
     }
 
-    async #start(id: string) {
+    async #start(id: Item) {
         // @ts-ignore
         const modules = import.meta.glob("../Stages/*")
 

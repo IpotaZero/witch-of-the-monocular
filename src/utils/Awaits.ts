@@ -6,6 +6,8 @@ export class Awaits {
 
     static async fadeOut(container: HTMLElement, ms: number = 200) {
         container.style.transition = "opacity 0s"
+        container.style.pointerEvents = "none"
+        ;([...container.children] as HTMLElement[]).forEach((p) => (p.style.pointerEvents = "none"))
 
         await this.frame(() => {
             container.style.opacity = "1"
@@ -25,6 +27,8 @@ export class Awaits {
 
     static async fadeIn(container: HTMLElement, ms: number = 200) {
         container.style.transition = "opacity 0s"
+        container.style.pointerEvents = "none"
+        ;([...container.children] as HTMLElement[]).forEach((p) => (p.style.pointerEvents = "none"))
 
         await this.frame(() => {
             container.style.opacity = "0"
@@ -37,6 +41,7 @@ export class Awaits {
         await this.frame(() => {
             container.style.opacity = "1"
             container.style.pointerEvents = ""
+            ;([...container.children] as HTMLElement[]).forEach((p) => (p.style.pointerEvents = ""))
         })
 
         await this.sleep(ms)

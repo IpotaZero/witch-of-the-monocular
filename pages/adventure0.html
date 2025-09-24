@@ -1,7 +1,7 @@
 <div class="page" id="first">
     <img src="assets/images/stages/first.png" alt="" class="background" />
 
-    <button class="door" data-link="room-0" style="left: 38%; top: 40%; height: 5em; width: 5em">ドア</button>
+    <button class="door" data-link="room-0" style="left: 38%; top: 40%; height: 5em; width: 5em"></button>
 
     <span class="room-name">玄関</span>
 </div>
@@ -9,7 +9,7 @@
 <div class="page" id="room-0">
     <img src="assets/images/stages/room-0.png" alt="" class="background" />
 
-    <button class="door" data-link="room-1" style="left: 40%; top: 30%">ドア</button>
+    <button class="door" data-link="room-1" style="left: 40%; top: 30%"></button>
     <button class="item" data-link="1階のカギ" style="left: 80%">
         <img src="assets/images/item.png" alt="" />
     </button>
@@ -31,10 +31,10 @@
 <div class="page" id="room-1">
     <img src="assets/images/stages/corridor.png" alt="" class="background" />
 
-    <button class="door" data-link="kitchen" style="left: 30%; top: 30%; width: 25%; height: 70%">ドア</button>
-    <button class="door" data-link="リビング" style="left: 65%; top: 35%; width: 10%; height: 37%">ドア</button>
+    <button class="door" data-link="kitchen" style="left: 30%; top: 30%; width: 25%; height: 70%"></button>
+    <button class="door" data-link="リビング" style="left: 65%; top: 35%; width: 10%; height: 37%"></button>
 
-    <button class="door" data-link="廊下奥" style="left: 75%; top: 40%; width: 18%; height: 20%">ドア</button>
+    <button class="door" data-link="廊下奥" style="left: 75%; top: 40%; width: 18%; height: 20%"></button>
 
     <button class="back" data-back="1">戻る</button>
     <span class="room-name">廊下</span>
@@ -43,9 +43,9 @@
 <div class="page" id="廊下奥">
     <img src="assets/images/stages/廊下奥.png" alt="" class="background" />
 
-    <button class="door" data-link="階段-不" style="right: 0; top: 10%; width: 18%; height: 80%">ドア</button>
-    <button class="door" data-link="階段-可" style="right: 0; top: 10%; width: 18%; height: 80%">ドア</button>
-    <button class="door" data-link="廊下-突き当り" style="left: 0%; height: 80%">ドア</button>
+    <button class="door" data-link="階段-不" style="right: 0; top: 10%; width: 18%; height: 80%"></button>
+    <button class="door" data-link="階段-可" style="right: 0; top: 10%; width: 18%; height: 80%"></button>
+    <button class="door" data-link="廊下-突き当り" style="left: 0%; height: 80%"></button>
 
     <button class="back" data-back="1">戻る</button>
     <span class="room-name">廊下</span>
@@ -74,7 +74,7 @@
 <div class="page" id="廊下-突き当り">
     <img src="assets/images/stages/廊下-突き当り.png" alt="" class="background" />
 
-    <button class="door" data-link="作業室" style="left: 25%; height: 30%; width: 10%; top: 45%">ドア</button>
+    <button class="door" data-link="作業室" style="left: 25%; height: 30%; width: 10%; top: 45%"></button>
 
     <button class="serif" data-link="観葉植物" style="left: 60%; height: 30%; width: 10%; top: 45%"></button>
 
@@ -87,7 +87,7 @@
 
     <button class="door" data-link="水バケツ" style="left: 0%; top: 40%; width: 18%; height: 30%"></button>
 
-    <button class="door" data-link="包丁" style="left: 30%; bottom: 10%; width: 18%; height: 40%">ドア</button>
+    <button class="door" data-link="包丁" style="left: 30%; bottom: 10%; width: 18%; height: 40%"></button>
     <button class="serif" data-link="手が届かない" style="left: 10%; top: 0%; width: 38%; height: 20%"></button>
     <button class="serif" data-link="皿が入っている" style="left: 75%; top: 10%; width: 28%; height: 70%"></button>
 
@@ -107,7 +107,7 @@
 <div class="page" id="リビング">
     <img src="assets/images/stages/リビング.png" alt="" class="background" />
 
-    <button class="door" data-link="ライター" style="left: 30%; top: 45%; width: 18%; height: 15%">ドア</button>
+    <button class="door" data-link="ライター" style="left: 30%; top: 45%; width: 18%; height: 15%"></button>
 
     <button class="back" data-back="1">戻る</button>
     <span class="room-name">リビング</span>
@@ -129,10 +129,7 @@
         <img src="assets/images/バケツ.png" alt="" />
     </button>
 
-    <button
-        class="serif"
-        data-link="冒涜的な何かを感じる絵"
-        style="left: 30%; height: 30%; width: 40%; top: 35%"></button>
+    <button class="serif" data-link="絵" style="left: 30%; height: 30%; width: 40%; top: 35%"></button>
 
     <button class="back" data-back="1">戻る</button>
 
@@ -150,7 +147,7 @@
 
 <button id="update">UPDATE</button>
 
-<button id="pause-button" data-link="pause">X</button>
+<button id="pause-button" data-link="pause">≡</button>
 
 <div class="page" id="pause" data-layer="1">
     <div id="buttons">
@@ -219,7 +216,8 @@
         left: 1em;
         top: 1em;
         border: whitesmoke 1px solid;
-        width: 3em;
+
+        padding: 0.1em;
 
         background-color: #111c;
     }

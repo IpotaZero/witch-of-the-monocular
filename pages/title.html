@@ -5,6 +5,8 @@
         <button data-link="start">始める</button>
         <button data-link="past">今までの</button>
         <button data-link="how-to-play">遊び方</button>
+        <button data-link="setting">設定</button>
+        <button data-link="fullscreen">全画面</button>
         <button data-link="credit">Credit</button>
     </div>
 </div>
@@ -30,6 +32,20 @@
     <button data-back="1">戻る</button>
 </div>
 
+<div class="page" id="setting">
+    <div for="bgm-volume">
+        BGM Volume
+        <input type="range" name="bgm-volume" id="bgm-volume" min="0" max="9" value="9" />
+    </div>
+    <div for="se-volume">
+        SE Volume
+        <input type="range" name="se-volume" id="se-volume" min="0" max="9" value="9" />
+    </div>
+    <button id="delete-data">データを消す</button>
+
+    <button data-back="1">戻る</button>
+</div>
+
 <div class="page" id="credit">
     <button data-back="1">戻る</button>
 </div>
@@ -40,7 +56,7 @@
     }
 
     h1 {
-        font-size: min(45dvh, 13dvw);
+        font-size: min(40dvh, 12dvw);
         font-weight: unset;
         line-height: 1.4em;
         height: 100%;
@@ -57,7 +73,7 @@
         display: flex;
         flex-direction: column;
         align-self: flex-end;
-        gap: 1em;
+        gap: 0.5em;
     }
 
     #how-to-play {
@@ -68,18 +84,57 @@
     }
 
     [data-back] {
-        position: absolute;
+        position: fixed;
         left: 1em;
         top: 1em;
         font-size: 6dvh;
     }
 
     #past {
-        flex-direction: column;
-        align-items: flex-start;
+        justify-content: flex-start;
+
+        gap: 1em;
+
+        overflow-x: auto;
 
         & button {
             padding: 0.5em;
+            border: whitesmoke 1px solid;
+        }
+    }
+
+    #setting {
+        flex-direction: column;
+
+        gap: 1em;
+
+        & input {
+            pointer-events: all;
+            width: 100%;
+        }
+    }
+
+    .particle0 {
+        top: -100%;
+        animation: fall linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes fall {
+        0% {
+            top: 0;
+            transform: rotate(0);
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 0.4;
+        }
+
+        100% {
+            top: 100%;
+            transform: rotate(360deg);
+            opacity: 0;
         }
     }
 </style>

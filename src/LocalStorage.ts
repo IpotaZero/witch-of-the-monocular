@@ -60,7 +60,7 @@ export class LocalStorage {
         this.setFlags(items)
     }
 
-    static addClearedStageId(id: string) {
+    static addClearedStageId(id: Item) {
         const c = this.getClearedStageId()
         if (!c.includes(id)) {
             c.push(id)
@@ -68,11 +68,39 @@ export class LocalStorage {
         }
     }
 
-    static getClearedStageId(): string[] {
+    static getClearedStageId(): Item[] {
         const c = localStorage.getItem("cleared-stages")
         return c ? JSON.parse(c) : []
     }
+
+    static getVolume(): { bgm: number; se: number } {
+        const c = localStorage.getItem("volume")
+
+        if (!c) {
+            return {
+                bgm: 9,
+                se: 9,
+            }
+        }
+
+        return JSON.parse(c)
+    }
+
+    static setVolume(v: { bgm: number; se: number }) {
+        localStorage.setItem("volume", JSON.stringify(v))
+    }
 }
 
-export type Item = "1階のカギ" | "包丁" | "ライター" | "水の入ったバケツ" | "空のバケツ"
-type Flag = "met" | "key-0" | "1st" | "ツタを切った"
+export type Item =
+    | "1階のカギ"
+    | "包丁"
+    | "ライター"
+    | "水の入ったバケツ"
+    | "空のバケツ"
+    | "ぬるついたハンマー"
+    | "ハンマー"
+    | "ヘアピン"
+    | "魔導書"
+    | "薄い本"
+
+type Flag = "あらすじ" | "met" | "key-0" | "1st" | "ツタを切った" | "2階" | "寝室開放" | "お風呂" | "おトイレ" | "寝室"

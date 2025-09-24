@@ -1,11 +1,16 @@
 import { Dom } from "./Dom"
+import { ScenePretitle } from "./Scenes/ScenePretitle"
 import { Scenes } from "./Scenes/Scenes"
-import { SceneTitle } from "./Scenes/SceneTitle"
+import { BGM } from "./utils/BGM"
 import { Serif } from "./utils/Serif"
 
+BGM.init()
 Serif.init()
 Dom.init()
-Scenes.init(new SceneTitle())
+
+document.addEventListener("DOMContentLoaded", () => {
+    Scenes.init(new ScenePretitle())
+})
 
 window.addEventListener("contextmenu", (e) => {
     e.preventDefault()

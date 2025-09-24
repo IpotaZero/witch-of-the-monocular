@@ -21,7 +21,7 @@ export class Serif {
 
         this.#textArea = document.createElement("div")
         this.#textArea.id = "serif"
-        this.#textArea.classList.add("text-end", "fade-in", "hidden")
+        this.#textArea.classList.add("fade-in", "hidden")
 
         this.#container.onclick = () => {
             this.#say()
@@ -61,6 +61,13 @@ export class Serif {
 
             const t = this.#texts.shift() + ""
 
+            if (!t.endsWith(")")) {
+                this.#textArea.innerHTML = `<img src="assets/images/icon.png" align="top" />`
+            } else {
+                this.#textArea.innerHTML = ""
+                SE.say.play()
+            }
+
             if (t.endsWith(")")) {
             } else if (t.endsWith("!")) {
                 SE.strong.play()
@@ -73,7 +80,7 @@ export class Serif {
             }
 
             requestAnimationFrame(() => {
-                this.#textArea.innerHTML = t
+                this.#textArea.innerHTML += `<div class="text-area text-end">${t}</div>`
                 this.#textArea.classList.add("fade-in")
                 this.#textArea.classList.remove("hidden")
             })

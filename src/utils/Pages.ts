@@ -195,6 +195,9 @@ export class Pages {
 
     #disableButtons() {
         this.#container.style.pointerEvents = "none"
+
+        this.pages.getValues().forEach((p) => (p.style.pointerEvents = "none"))
+
         this.pages.getValues().forEach((page) => page.querySelectorAll("button").forEach((b) => (b.disabled = true)))
     }
 
@@ -205,6 +208,7 @@ export class Pages {
             .forEach((page) => page.querySelectorAll("button").forEach((b) => (b.disabled = false)))
 
         this.#container.style.pointerEvents = ""
+        this.pages.getValues().forEach((p) => (p.style.pointerEvents = ""))
     }
 }
 

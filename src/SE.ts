@@ -25,6 +25,7 @@ export class SE {
     static what = new Sound("assets/sounds/what.wav")
     static surprised = new Sound("assets/sounds/surprised.wav")
     static strong = new Sound("assets/sounds/strong.wav")
+    static say = new Sound("assets/sounds/say.mp3")
 
     static setVolume(volume: number) {
         Object.values(this).forEach((se) => {
