@@ -1,5 +1,6 @@
 import { Dom } from "../Dom"
-import { Item, LocalStorage } from "../LocalStorage"
+import { Item, itemMap } from "../Item"
+import { LocalStorage } from "../LocalStorage"
 import { Awaits } from "../utils/Awaits"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
@@ -85,6 +86,12 @@ export class SceneAdventure extends Scene {
         this.#pages.before("窓", async () => {
             Serif.say("(!)", "(足を踏み出した瞬間突然床が抜け落ちた!)")
             await Serif.wait()
+
+            LocalStorage.setChapter(2)
+            this.#pages.shaveBranch(1)
+
+            const { SceneAdventure } = await import("./SceneAdventure2")
+
             await Scenes.goto(() => new SceneAdventure())
         })
 
@@ -179,18 +186,7 @@ export class SceneAdventure extends Scene {
         const qs = (link: string, hidden: boolean) =>
             Dom.container.querySelector<HTMLElement>(`[data-link="${link}"]`)?.classList.toggle("hidden", hidden)
 
-        const itemSerif: Partial<Record<Item, string>> = {
-            "1階のカギ": "(玄関のすぐ奥の扉の鍵。......2重扉?)",
-            "包丁": "(軽くて扱いやすい包丁。)",
-            "ライター": "(よくあるライター。オイルは十分)",
-            "空のバケツ": "(何の変哲もないバケツ。)",
-            "水の入ったバケツ": "(水の入ったバケツ。地味に重い。)",
-            "ぬるついたハンマー": "(滑って使えそうにない。)",
-            "ハンマー": "(鍵もブッ壊せそうなハンマー。)",
-            "ヘアピン": "(技術があればピッキングできそう。)",
-            "魔導書": "(物体を変質させる魔法が書いてある。)",
-            "薄い本": "しばくぞ。",
-        }
+        const itemSerif = itemMap
 
         ;[...Dom.container.querySelector("#item")!.children]
             .filter((c) => !c.hasAttribute("data-back"))

@@ -1,5 +1,6 @@
 import { Dom } from "../Dom"
-import { Item, LocalStorage } from "../LocalStorage"
+import { getItem0, Item, itemMap } from "../Item"
+import { LocalStorage } from "../LocalStorage"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
 import { Serif } from "../utils/Serif"
@@ -28,7 +29,7 @@ export class SceneAdventure extends Scene {
             Serif.say(
                 '(森の中にある洋館、通称"ひとやしき"にはある噂があった。)',
                 "(そこには恐ろしい魔女がいて、一度入れば決して出てこられないというもの。)",
-                "(あなたは最近この辺りに引っ越してきたばかりでその噂を知らず、森の中で迷った挙句その屋敷に入ってしまったのであった......。)",
+                "(あなたは最近この辺りに引っ越してきたばかりでその噂を知らず森の中で迷い、その屋敷に入ってしまったのであった......。)",
             )
 
             await Serif.wait()
@@ -64,7 +65,7 @@ export class SceneAdventure extends Scene {
             )
         })
 
-        const getItem: Item[] = ["1階のカギ", "包丁", "ライター", "空のバケツ"]
+        const getItem = getItem0
 
         getItem.forEach((item) => {
             this.#pages.before("get-" + item, async () => {
@@ -102,10 +103,6 @@ export class SceneAdventure extends Scene {
 
                 Serif.say(`(${item}を手に入れた。)`)
             })
-        })
-
-        this.#pages.before(".*", async () => {
-            Serif.hide()
         })
 
         this.#pages.before("水バケツ", async () => {
@@ -173,10 +170,10 @@ export class SceneAdventure extends Scene {
         await this.#pages.load(Dom.container, html, { history: LocalStorage.getCurrentBranch() })
 
         const serifMap: Record<string, string[]> = {
-            "観葉植物": ["(観葉植物。)", "日当たりが悪くてげっそりしてるけど、世話はしてるよ。"],
+            "観葉植物": ["(観葉植物。)"],
             "手が届かない": ["(手が届かない。)", "そこには何もないと思うよ。"],
             "皿が入っている": ["(皿が入っている。)"],
-            "絵": ["(冒涜的な何かを感じる絵。)", "これはね、神様だよ。"],
+            "絵": ["(冒涜的な何かを感じる絵。)", "これはね、神様だよ。", "信じている人は私しかいなかったけど。"],
         }
 
         Dom.container.querySelectorAll(".serif").forEach((b) => {
@@ -208,13 +205,7 @@ export class SceneAdventure extends Scene {
         const qs = (link: string, hidden: boolean) =>
             Dom.container.querySelector<HTMLElement>(`[data-link="${link}"]`)?.classList.toggle("hidden", hidden)
 
-        const itemSerif: Partial<Record<Item, string>> = {
-            "1階のカギ": "(玄関のすぐ奥の扉の鍵。......2重扉?)",
-            "包丁": "(軽くて扱いやすい包丁。)",
-            "ライター": "(よくあるライター。オイルは十分)",
-            "空のバケツ": "(何の変哲もないバケツ。)",
-            "水の入ったバケツ": "(水の入ったバケツ。地味に重い。)",
-        }
+        const itemSerif = itemMap
 
         ;[...Dom.container.querySelector("#item")!.children]
             .filter((c) => !c.hasAttribute("data-back"))

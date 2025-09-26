@@ -2,6 +2,7 @@ import { Awaits } from "./Awaits"
 
 type Handler = (pages: Pages) => void
 type BeforeHandler = (pages: Pages) => Promise<boolean | void>
+type LeftHandler = (pages: Pages) => void | Promise<void>
 
 type FadeOption = Partial<{ msIn: number; msOut: number; back: boolean }>
 
@@ -12,7 +13,7 @@ export class Pages {
     readonly pages = new RegExpDict<HTMLElement>({})
 
     readonly #handlers = new RegExpDict<Handler>({})
-    readonly #leftHandlers = new RegExpDict<Handler>({})
+    readonly #leftHandlers = new RegExpDict<LeftHandler>({})
     readonly #beforeHandlers = new RegExpDict<BeforeHandler>({})
 
     #container!: HTMLElement
@@ -49,7 +50,7 @@ export class Pages {
         this.#handlers.add(selector, handler)
     }
 
-    onLeft(selector: string, handler: Handler) {
+    onLeft(selector: string, handler: LeftHandler) {
         this.#leftHandlers.add(selector, handler)
     }
 
@@ -119,7 +120,7 @@ export class Pages {
     async goto(id: string, { msIn = this.defaultMSIn, msOut = this.defaultMSOut, back = false }: FadeOption = {}) {
         if (await this.#runBefore(id)) return
         this.#disableButtons()
-        this.#runLeft(this.#currentPageId)
+        await this.#runLeft(this.#currentPageId)
 
         const from = this.pages.get(this.#currentPageId)
         const to = this.pages.get(id)
@@ -183,7 +184,7 @@ export class Pages {
     }
 
     #runLeft(id: string) {
-        this.#leftHandlers.getAll(id).forEach((handler) => handler(this))
+        return Promise.all(this.#leftHandlers.getAll(id).map((handler) => handler(this)))
     }
 
     #runOn(id: string) {

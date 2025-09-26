@@ -1,5 +1,6 @@
 import { Dom } from "../Dom"
-import { Item, LocalStorage } from "../LocalStorage"
+import { getItem0, getItem1, getItem2, Item, item0, item1, item2 } from "../Item"
+import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
@@ -40,7 +41,7 @@ export class SceneTitle extends Scene {
             return true
         })
 
-        const stages: Item[] = ["1階のカギ"]
+        const stages = [...getItem0, ...getItem1, ...getItem2]
 
         stages.forEach((item) => {
             this.#pages.before(item, async () => {
@@ -74,21 +75,53 @@ export class SceneTitle extends Scene {
             p.style.position = "absolute"
             p.style.left = `${10 + 80 * (i / 16)}%`
 
+            p.style.setProperty("--rotation", Math.random() > 0.5 ? "-1" : "1")
+
             title.appendChild(p)
         }
+
+        const img = new Image()
+        img.src = "assets/images/particle1.png"
+
+        this.#pages.pages.getValues().forEach((p) => {
+            p.addEventListener("click", (e) => {
+                const rect = (e.target as Element).getBoundingClientRect()
+                const x = e.clientX - rect.left
+                const y = e.clientY - rect.top
+
+                for (let i = 0; i < 8; i++) {
+                    const particle = img.cloneNode() as HTMLImageElement
+                    particle.style.position = "fixed"
+                    particle.style.pointerEvents = "none"
+                    particle.style.left = `calc(${rect.left + x}px - 4dvh)`
+                    particle.style.top = `calc(${rect.top + y}px - 4dvh)`
+                    particle.style.width = "8dvh"
+                    particle.style.height = "8dvh"
+                    particle.style.scale = "" + (Math.random() / 2 + 0.8)
+                    particle.style.opacity = "" + Math.random() * 0.5
+                    particle.style.transition = "transform 1s ease-out, opacity 1s ease-out"
+                    particle.style.zIndex = "1000"
+                    document.body.appendChild(particle)
+
+                    const angle = (Math.PI * 2 * i) / 8 + Math.random()
+                    const distance = 60 + Math.random() * 20
+                    requestAnimationFrame(() => {
+                        particle.style.transform = `translate(${(Math.cos(angle) * distance) / 8}dvh, ${
+                            (Math.sin(angle) * distance) / 8
+                        }dvh) scale(0.5) rotate(${(angle / Math.PI) * 180 * (Math.random() - 0.5)}deg)`
+                        particle.style.opacity = "0"
+                    })
+
+                    setTimeout(() => {
+                        particle.remove()
+                    }, 1000)
+                }
+            })
+        })
     }
 
     #setupCleared() {
-        const stages: Item[] = [
-            "1階のカギ",
-            "包丁",
-            "ライター",
-            "空のバケツ",
-            "ぬるついたハンマー",
-            "ヘアピン",
-            "魔導書",
-            "薄い本",
-        ]
+        const stages = [...getItem0, ...getItem1, ...getItem2]
 
         const past = this.#pages.pages.get("past")!
 
@@ -127,11 +160,19 @@ export class SceneTitle extends Scene {
             LocalStorage.setVolume({ bgm: +b.value, se: +s.value })
         }
 
-        const d = Dom.container.querySelector<HTMLButtonElement>("#delete-data")!
-        d.onclick = () => {
-            localStorage.clear()
+        this.#pages.before("delete-adventure-data", async () => {
+            localStorage.removeItem("flags")
+            localStorage.removeItem("items")
+            localStorage.removeItem("chapter")
+            localStorage.removeItem("current-branch")
 
-            Scenes.goto(() => new SceneTitle())
-        }
+            return true
+        })
+
+        this.#pages.before("delete-data", async () => {
+            localStorage.clear()
+            await Scenes.goto(() => new SceneTitle())
+            return true
+        })
     }
 }

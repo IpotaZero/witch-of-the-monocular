@@ -1,0 +1,167 @@
+<div class="page" id="first">
+    <img src="assets/images/stages/牢屋-0.png" alt="" class="background" />
+
+    <button class="serif" data-link="大穴" style="left: 20%; top: 0%; height: 10%; width: 30%"></button>
+    <button class="serif" data-link="格子" style="left: 10%; top: 20%; height: 55%; width: 35%"></button>
+    <button class="serif" data-link="扉" style="left: 45%; top: 20%; height: 55%; width: 20%"></button>
+    <button class="serif" data-link="牢屋-1" style="left: 65%; top: 55%; height: 15%; width: 55%"></button>
+
+    <span class="room-name">牢屋</span>
+</div>
+
+<div class="page" id="牢屋-1">
+    <img src="assets/images/stages/牢屋-1.png" alt="" class="background" />
+
+    <button class="door" data-link="牢獄" style="left: 38%; top: 35%; height: 40%; width: 20%"></button>
+
+    <button class="door" data-back="1" style="left: 0%; top: 55%; height: 15%; width: 30%"></button>
+    <span class="room-name">牢屋</span>
+</div>
+
+<div class="page" id="牢獄">
+    <img src="assets/images/stages/牢獄.png" alt="" class="background" />
+
+    <button class="door" data-link="地下室" style="left: 70%; top: 30%; height: 60%; width: 20%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">牢屋</span>
+</div>
+
+<div class="page" id="地下室">
+    <img src="assets/images/stages/地下室.png" alt="" class="background" />
+
+    <button class="door" data-link="物置" style="left: 8%; top: 45%; height: 30%; width: 8%"></button>
+    <button class="door" data-link="地下室-1" style="left: 15%; top: 40%; height: 25%; width: 15%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">地下室</span>
+</div>
+
+<div class="page" id="物置">
+    <img src="assets/images/stages/物置.png" alt="" class="background" />
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">物置</span>
+</div>
+
+<button id="update">UPDATE</button>
+
+<button id="pause-button" data-link="pause">≡</button>
+
+<div class="page" id="pause" data-layer="1">
+    <div id="buttons">
+        <button data-back="1">再開</button>
+        <button data-link="item">アイテム</button>
+        <button data-link="title">タイトルへ</button>
+    </div>
+</div>
+
+<div class="page" id="item" data-layer="1">
+    <button data-back="1">戻る</button>
+</div>
+
+<div id="cover"></div>
+
+<style>
+    #container {
+        height: 100%;
+        width: auto;
+        aspect-ratio: 16/10;
+    }
+
+    .page {
+        font-size: 6dvh;
+        padding: 1em;
+
+        height: 100%;
+        width: 100%;
+    }
+
+    #first:not(.hidden) ~ #back {
+        display: none;
+    }
+
+    #item-0 {
+        flex-direction: column;
+
+        & .options {
+            display: flex;
+            gap: 1em;
+        }
+    }
+
+    .options {
+        display: flex;
+
+        z-index: 3;
+
+        gap: 2em;
+
+        background-color: #1118;
+
+        padding: 0.5em;
+    }
+
+    #cover {
+        box-shadow: inset 0px -6vh 12dvh 6dvh #111;
+        pointer-events: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    #pause-button {
+        position: absolute;
+        left: 1em;
+        top: 1em;
+        border: whitesmoke 1px solid;
+
+        padding: 0.1em;
+
+        background-color: #111c;
+    }
+
+    #pause {
+        z-index: 10;
+        background-color: #111e;
+        justify-content: flex-start;
+
+        #buttons {
+            display: flex;
+            flex-direction: column;
+            align-self: flex-start;
+
+            /* border: whitesmoke 1px solid; */
+            padding: 0.5em;
+        }
+    }
+
+    #item {
+        z-index: 10;
+        background-color: #111e;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 1em;
+
+        & [data-back] {
+            position: absolute;
+            top: 1em;
+            left: 1em;
+        }
+    }
+
+    #update {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        color: whitesmoke;
+
+        z-index: 100000;
+    }
+</style>

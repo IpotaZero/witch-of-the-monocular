@@ -1,6 +1,7 @@
 import { Dom } from "../Dom"
 import { Game } from "../Games/Game"
-import { Item, LocalStorage } from "../LocalStorage"
+import { Item } from "../Item"
+import { LocalStorage } from "../LocalStorage"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
 import { Scene } from "./Scene"

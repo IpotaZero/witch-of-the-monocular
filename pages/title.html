@@ -41,7 +41,8 @@
         SE Volume
         <input type="range" name="se-volume" id="se-volume" min="0" max="9" value="9" />
     </div>
-    <button id="delete-data">データを消す</button>
+    <button data-link="delete-adventure-data">探索データを消す</button>
+    <button data-link="delete-data">全てのデータを消す</button>
 
     <button data-back="1">戻る</button>
 </div>
@@ -97,6 +98,8 @@
 
         overflow-x: auto;
 
+        flex-wrap: wrap;
+
         & button {
             padding: 0.5em;
             border: whitesmoke 1px solid;
@@ -133,7 +136,7 @@
 
         100% {
             top: 100%;
-            transform: rotate(360deg);
+            transform: rotate(calc(360deg * var(--rotation)));
             opacity: 0;
         }
     }

@@ -1,3 +1,5 @@
+import { Item } from "./Item"
+
 export class LocalStorage {
     static getChapter(): number {
         const c = localStorage.getItem("chapter")
@@ -91,16 +93,15 @@ export class LocalStorage {
     }
 }
 
-export type Item =
-    | "1階のカギ"
-    | "包丁"
-    | "ライター"
-    | "水の入ったバケツ"
-    | "空のバケツ"
-    | "ぬるついたハンマー"
-    | "ハンマー"
-    | "ヘアピン"
-    | "魔導書"
-    | "薄い本"
-
-type Flag = "あらすじ" | "met" | "key-0" | "1st" | "ツタを切った" | "2階" | "寝室開放" | "お風呂" | "おトイレ" | "寝室"
+type Flag =
+    | "あらすじ"
+    | "met"
+    | "key-0"
+    | "1st"
+    | "ツタを切った"
+    | "2階"
+    | "寝室開放"
+    | "お風呂"
+    | "おトイレ"
+    | "寝室"
+    | "地下"

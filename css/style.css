@@ -31,6 +31,10 @@ body {
     height: 100%;
 }
 
+html {
+    background-color: #111;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -72,12 +76,12 @@ body {
 
 @media (orientation: portrait) {
     #container {
-        opacity: 0;
-        pointer-events: none;
+        display: none;
     }
 
     #error {
         opacity: 1;
+        font-size: 10dvw;
     }
 }
 

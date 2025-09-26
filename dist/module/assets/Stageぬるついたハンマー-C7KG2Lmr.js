@@ -1,2 +1,0 @@
-import{G as n,C as o}from"./Game-Dbs3negb.js";class a extends n{$setupElement(r){this.$defaultState=[3,4,1,5,2,0,6];for(let t=0;t<7;t++){const e=[-Math.cos(Math.PI*2*t/7)*28,Math.sin(Math.PI*2*t/7)*28],s=this.$createVertex(e[1],e[0],t);this.$vertices.push(s),r.appendChild(s)}for(let t=0;t<this.$vertices.length;t++)for(let e=t+1;e<this.$vertices.length;e++){if((t+e)%7===0)return;const s=(e-t-1)%7===0,i=new o(this.$vertices[t],this.$vertices[e],{width:6,arrow:s});this.$connectors.set(i,[t,e])}}}export{a as Stage};
-//# sourceMappingURL=Stageぬるついたハンマー-C7KG2Lmr.js.map
