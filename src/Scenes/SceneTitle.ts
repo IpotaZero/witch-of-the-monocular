@@ -66,7 +66,7 @@ export class SceneTitle extends Scene {
             p.src = "assets/images/particle0.png"
             p.classList.add("particle0")
 
-            const size = Math.random() * 16
+            const size = Math.random() ** 2 * 24
 
             p.style.animationDelay = `${size / 2}s`
             p.style.width = `${size + 16}vh`
@@ -128,13 +128,15 @@ export class SceneTitle extends Scene {
         const cleared = LocalStorage.getClearedStageId()
 
         stages.forEach((id) => {
-            if (!cleared.includes(id)) return
-
-            past.innerHTML += `<button data-link="stage-${id}">${id}</button>`
-            this.#pages.before(`stage-${id}`, async () => {
-                const { SceneGame } = await import("./SceneGame")
-                await Scenes.goto(() => new SceneGame(id, { from: "title" }), { mode: "fade" })
-            })
+            if (!cleared.includes(id)) {
+                past.innerHTML += `<button data-link="stage-${id}" class="uncleared-stage">${id}</button>`
+            } else {
+                past.innerHTML += `<button data-link="stage-${id}">${id}</button>`
+                this.#pages.before(`stage-${id}`, async () => {
+                    const { SceneGame } = await import("./SceneGame")
+                    await Scenes.goto(() => new SceneGame(id, { from: "title" }), { mode: "fade" })
+                })
+            }
         })
     }
 
@@ -148,7 +150,7 @@ export class SceneTitle extends Scene {
         s.value = "" + se
 
         BGM.setVolume(bgm / 9)
-        SE.setVolume(se / 9)
+        SE.setVolume(se / 9 / 2)
 
         b.oninput = () => {
             BGM.setVolume(+b.value / 9)
@@ -156,7 +158,7 @@ export class SceneTitle extends Scene {
         }
 
         s.oninput = () => {
-            SE.setVolume(+s.value / 9)
+            SE.setVolume(+s.value / 9 / 2)
             LocalStorage.setVolume({ bgm: +b.value, se: +s.value })
         }
 

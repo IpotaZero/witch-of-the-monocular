@@ -1,0 +1,2 @@
+import{G as r,C as v}from"./Game-Dbs3negb.js";class u extends r{$setupElement(t){this.$defaultState=[3,1,2,4,0];let e=0;this.v(0,-32,e++,t),this.v(0,0,e++,t),this.v(-32,32,e++,t),this.v(0,32,e++,t),this.v(32,32,e++,t),this.e(0,1),this.e(3,2,!0),this.e(4,3,!0),this.e(1,2),this.e(1,4),this.e(0,2,!0),this.e(4,0,!0)}v(t,e,s,h){const i=this.$createVertex(t,e,s);this.$vertices.push(i),h.appendChild(i)}e(t,e,s=!1){const h=new v(this.$vertices[t],this.$vertices[e],{arrow:s});this.$connectors.set(h,[t,e])}}export{u as Stage};
+//# sourceMappingURL=Stage金属片-BJL2z-be.js.map

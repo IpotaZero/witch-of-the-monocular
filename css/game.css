@@ -54,7 +54,7 @@ polyline {
     color: gray;
 
     &.available {
-        color: rgb(44, 255, 135);
+        color: rgb(40, 255, 133);
 
         &.hovered {
             color: rgb(255, 47, 0);

@@ -1,7 +1,7 @@
 export class Sound {
     #audio: HTMLAudioElement
 
-    constructor(path: string, volume: number = 1) {
+    constructor(path: string, volume: number = 0.5) {
         this.#audio = new Audio(path)
         this.#audio.volume = volume
     }

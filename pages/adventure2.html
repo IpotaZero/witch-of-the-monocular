@@ -32,19 +32,99 @@
     <img src="assets/images/stages/地下室.png" alt="" class="background" />
 
     <button class="door" data-link="物置" style="left: 8%; top: 45%; height: 30%; width: 8%"></button>
-    <button class="door" data-link="地下室-1" style="left: 15%; top: 40%; height: 25%; width: 15%"></button>
+    <button class="door" data-link="地下道" style="left: 15%; top: 40%; height: 25%; width: 15%"></button>
+
+    <button class="item" data-link="金属片" style="left: 75%; top: 70%; height: 20%; width: 20%">
+        <img src="assets/images/items/金属片.png" alt="" />
+    </button>
+
+    <button class="item" data-link="蝋燭" style="left: 65%; top: 55%; height: 20%; width: 20%">
+        <img src="assets/images/items/蝋燭.png" alt="" />
+    </button>
 
     <button class="back" data-back="1">戻る</button>
 
     <span class="room-name">地下室</span>
 </div>
 
+<div class="page" id="金属片">
+    <img src="assets/images/stages/金属片.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-金属片" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
 <div class="page" id="物置">
     <img src="assets/images/stages/物置.png" alt="" class="background" />
+
+    <button class="door" data-link="ガラス瓶" style="left: 20%; top: 20%; height: 30%; width: 35%"></button>
+    <button class="door" data-link="楽譜" style="left: 20%; top: 50%; height: 40%; width: 35%"></button>
+    <button class="serif" data-link="樽" style="left: 55%; top: 50%; height: 40%; width: 18%"></button>
+    <button class="serif" data-link="箒" style="left: 73%; top: 40%; height: 50%; width: 10%"></button>
 
     <button class="back" data-back="1">戻る</button>
 
     <span class="room-name">物置</span>
+</div>
+
+<div class="page" id="ガラス瓶">
+    <img src="assets/images/stages/瓶.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-ガラス瓶" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
+<div class="page" id="楽譜">
+    <img src="assets/images/stages/楽譜.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-楽譜" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
+<div class="page" id="地下道">
+    <img src="assets/images/stages/地下道.png" alt="" class="background" />
+
+    <button class="door" data-link="礼拝堂" style="left: 26%; top: 35%; height: 45%; width: 10%"></button>
+    <button class="serif" data-link="地下絵画" style="left: 53%; top: 23%; height: 45%; width: 37%"></button>
+
+    <button class="door" data-link="地下通路-不" style="left: 40%; top: 35%; height: 35%; width: 10%"></button>
+    <button class="door" data-link="地下通路-可" style="left: 40%; top: 35%; height: 35%; width: 10%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">地下道</span>
+</div>
+
+<div class="page" id="礼拝堂">
+    <img src="assets/images/stages/礼拝堂.png" alt="" class="background" />
+
+    <button class="door" data-link="祭壇" style="left: 25%; top: 33%; height: 45%; width: 40%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">礼拝堂</span>
+</div>
+
+<div class="page" id="地下通路-不">
+    <img src="assets/images/stages/地下通路-不.png" alt="" class="background" />
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">地下通路</span>
+</div>
+
+<div class="page" id="地下通路-可">
+    <img src="assets/images/stages/地下通路-可.png" alt="" class="background" />
+
+    <button class="back" data-back="1">戻る</button>
+
+    <span class="room-name">地下通路</span>
 </div>
 
 <button id="update">UPDATE</button>
@@ -66,18 +146,16 @@
 <div id="cover"></div>
 
 <style>
-    #container {
-        height: 100%;
-        width: auto;
-        aspect-ratio: 16/10;
+    .page {
+        --ar-w: 16;
+        --ar-h: 10;
+        aspect-ratio: var(--ar-w) / var(--ar-h);
+        width: min(100dvw, calc(100dvh * (var(--ar-w) / var(--ar-h))));
+        height: auto;
     }
 
     .page {
         font-size: 6dvh;
-        padding: 1em;
-
-        height: 100%;
-        width: 100%;
     }
 
     #first:not(.hidden) ~ #back {
@@ -103,65 +181,5 @@
         background-color: #1118;
 
         padding: 0.5em;
-    }
-
-    #cover {
-        box-shadow: inset 0px -6vh 12dvh 6dvh #111;
-        pointer-events: none;
-        position: absolute;
-        width: 100%;
-        height: 100%;
-    }
-
-    #pause-button {
-        position: absolute;
-        left: 1em;
-        top: 1em;
-        border: whitesmoke 1px solid;
-
-        padding: 0.1em;
-
-        background-color: #111c;
-    }
-
-    #pause {
-        z-index: 10;
-        background-color: #111e;
-        justify-content: flex-start;
-
-        #buttons {
-            display: flex;
-            flex-direction: column;
-            align-self: flex-start;
-
-            /* border: whitesmoke 1px solid; */
-            padding: 0.5em;
-        }
-    }
-
-    #item {
-        z-index: 10;
-        background-color: #111e;
-
-        flex-direction: column;
-
-        align-items: flex-start;
-
-        gap: 1em;
-
-        & [data-back] {
-            position: absolute;
-            top: 1em;
-            left: 1em;
-        }
-    }
-
-    #update {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        color: whitesmoke;
-
-        z-index: 100000;
     }
 </style>

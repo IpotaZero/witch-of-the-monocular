@@ -1,5 +1,5 @@
 import { Dom } from "../Dom"
-import { Item, itemMap } from "../Item"
+import { getItem1, Item, itemMap } from "../Item"
 import { LocalStorage } from "../LocalStorage"
 import { Awaits } from "../utils/Awaits"
 import { BGM } from "../utils/BGM"
@@ -123,7 +123,7 @@ export class SceneAdventure extends Scene {
                 Serif.say("(もうした。)")
                 await Serif.wait()
             } else {
-                Serif.say("あー。一旦監視切るね。")
+                Serif.say("あー。ごゆっくり。")
                 await Serif.wait()
                 await Awaits.fadeOut(Dom.container, 1000)
                 await Awaits.fadeIn(Dom.container, 1000)
@@ -153,7 +153,7 @@ export class SceneAdventure extends Scene {
             return true
         })
 
-        const getItem: Item[] = ["ぬるついたハンマー", "ヘアピン", "魔導書", "薄い本"]
+        const getItem = getItem1
 
         getItem.forEach((item) => {
             this.#pages.before("get-" + item, async () => {

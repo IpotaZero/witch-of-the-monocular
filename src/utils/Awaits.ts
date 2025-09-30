@@ -127,7 +127,7 @@ export class Awaits {
 
         await this.frame(() => {
             container.style.opacity = "1"
-            container.style.scale = "1"
+            container.style.scale = ""
             container.style.pointerEvents = ""
         })
 
@@ -205,7 +205,7 @@ export class Awaits {
 
         await this.frame(() => {
             container.style.opacity = "1"
-            container.style.scale = "1"
+            container.style.scale = ""
             container.style.pointerEvents = ""
         })
 

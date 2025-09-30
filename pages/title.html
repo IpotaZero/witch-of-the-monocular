@@ -75,6 +75,11 @@
         flex-direction: column;
         align-self: flex-end;
         gap: 0.5em;
+
+        & button {
+            align-self: flex-end;
+            text-align: right;
+        }
     }
 
     #how-to-play {
@@ -100,9 +105,20 @@
 
         flex-wrap: wrap;
 
+        padding: 4em 1em;
+
         & button {
             padding: 0.5em;
             border: whitesmoke 1px solid;
+
+            &.uncleared-stage {
+                opacity: 0.2;
+                cursor: auto;
+
+                &:hover {
+                    scale: 1;
+                }
+            }
         }
     }
 

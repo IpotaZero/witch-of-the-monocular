@@ -1,8 +1,6 @@
 import { Dom } from "../Dom"
-import { Item, itemMap } from "../Item"
+import { getItem2, Item, itemMap } from "../Item"
 import { LocalStorage } from "../LocalStorage"
-import { Awaits } from "../utils/Awaits"
-import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
 import { Serif } from "../utils/Serif"
 import { Scene } from "./Scene"
@@ -40,10 +38,53 @@ export class SceneAdventure extends Scene {
             Serif.say("大丈夫!?", "とりあえず......出口を探そうか。")
         })
 
+        this.#pages.on("地下通路-不", () => {
+            Serif.say("(階段から雪崩れ込んだ土砂が道を塞いでいる。)", "そんな。")
+        })
+
+        this.#pages.before("祭壇", async () => {
+            if (0) {
+                Serif.say(
+                    "(大きな石でできた祭壇。見つめていると不思議な気持ちになる。)",
+                    "何かをお供えすれば......もしかしたら......。",
+                )
+                await Serif.wait()
+            } else {
+                Serif.say("(持ち物がひとりでに動き出し、音楽を奏で始める......。)", "(近くで大きな音がした。)")
+                await Serif.wait()
+
+                LocalStorage.addFlag("土砂突破")
+            }
+
+            return true
+        })
+
+        this.#pages.before("蝋燭", async () => {
+            if (LocalStorage.getItems().includes("金属片")) {
+                Serif.say("(金属片を温めてみると形が変わり始めた。)", "(ベルを手に入れた。)")
+                await Serif.wait()
+                LocalStorage.removeItem("金属片")
+                LocalStorage.addItem("ベル")
+                this.#update()
+            } else {
+                Serif.say("(青い炎が揺らめいている。)")
+                await Serif.wait()
+            }
+
+            return true
+        })
+
         const serifs = {
             "大穴": ["(ここから落ちてきたみたいだ。)"],
             "格子": ["(さすがに通れそうにない。)"],
             "扉": ["(開かない。)"],
+            "地下絵画": [
+                "(冒涜的なものを感じる絵。)",
+                "宗教は人だけでなく、魔女さえも狂わせたんだ。",
+                "昔の話だけどね。",
+            ],
+            "樽": ["(何かの発酵したような臭いがする。)"],
+            "箒": ["昔は誰でも大空を飛べたんだ。今は......どうなのかな。"],
         }
 
         Object.entries(serifs).forEach(([link, serif]) => {
@@ -54,12 +95,7 @@ export class SceneAdventure extends Scene {
             })
         })
 
-        this.#pages.onLeft("first", async () => {
-            Serif.say("(穴が開いている。ギリギリ通れそうだ。)")
-            await Serif.wait()
-        })
-
-        const getItem: Item[] = []
+        const getItem = getItem2
 
         getItem.forEach((item) => {
             this.#pages.before("get-" + item, async () => {
@@ -98,7 +134,9 @@ export class SceneAdventure extends Scene {
             .filter((c) => !c.hasAttribute("data-back"))
             .forEach((c) => c.remove())
 
-        LocalStorage.getItems().forEach((item) => {
+        const items = LocalStorage.getItems()
+
+        items.forEach((item) => {
             qs(item, true)
 
             Dom.container.querySelector("#item")!.innerHTML += `<button data-link="item-${item}">${item}</button>`
@@ -109,8 +147,19 @@ export class SceneAdventure extends Scene {
             })
         })
 
-        if (LocalStorage.getItems().includes("ハンマー")) {
-            qs("ぬるついたハンマー", true)
+        if (LocalStorage.getItems().includes("ベル")) {
+            qs("金属片", true)
+        }
+
+        const h = Dom.container.querySelector("[data-link=地下通路-不]")!
+        const k = Dom.container.querySelector("[data-link=地下通路-可")!
+
+        if (LocalStorage.getFlags().includes("土砂突破")) {
+            h.classList.add("hidden")
+            k.classList.remove("hidden")
+        } else {
+            k.classList.add("hidden")
+            h.classList.remove("hidden")
         }
 
         this.#pages.updateButtons()

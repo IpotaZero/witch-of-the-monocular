@@ -1,9 +1,9 @@
 export const getItem0 = ["1階のカギ", "包丁", "ライター", "空のバケツ"] as const
 export const item0 = [...getItem0, "水の入ったバケツ"] as const
-export const getItem1 = ["ぬるついたハンマー", "ヘアピン", "魔導書", "薄い本"] as const
+export const getItem1 = ["ぬるついたハンマー", "ヘアピン", "魔導書"] as const
 export const item1 = [...getItem1, "ハンマー"] as const
-export const getItem2 = [] as const
-export const item2 = [...getItem2] as const
+export const getItem2 = ["ガラス瓶", "楽譜", "金属片"] as const
+export const item2 = [...getItem2, "ベル"] as const
 
 export type GetItem0 = (typeof getItem0)[number]
 export type Item0 = (typeof item0)[number]
@@ -24,5 +24,8 @@ export const itemMap: Record<Item, string> = {
     "ハンマー": "(鍵もブッ壊せそうなハンマー。)",
     "ヘアピン": "(技術があればピッキングできそう。)",
     "魔導書": "(物体を変質させる魔法が書いてある。)",
-    "薄い本": "しばくぞ。",
+    "ガラス瓶": "(叩くと心地よい音が鳴る。)",
+    "金属片": "(何かの成れの果て。)",
+    "楽譜": "(知らないはずなのに見るとメロディが流れてくる。)",
+    "ベル": "(少し鈍い。)",
 }
