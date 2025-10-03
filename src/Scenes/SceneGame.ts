@@ -2,6 +2,7 @@ import { Dom } from "../Dom"
 import { Game } from "../Games/Game"
 import { Item } from "../Item"
 import { LocalStorage } from "../LocalStorage"
+import { SE } from "../SE"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
 import { Scene } from "./Scene"
@@ -31,7 +32,7 @@ export class SceneGame extends Scene {
         const html = await (await fetch("pages/game.html")).text()
         await this.#pages.load(Dom.container, html)
 
-        BGM.ffp("assets/sounds/puzzle.mp3", { loopStartS: 17.297 })
+        BGM.ffp("assets/sounds/puzzle.mp3", { loopStartS: 17.297, volume: 0.5 })
 
         this.#pages.on("back", async () => {
             this.#return()
@@ -80,6 +81,7 @@ export class SceneGame extends Scene {
         this.#game.onClear = () => {
             Dom.container.querySelector("#clear")?.classList.remove("hidden")
             LocalStorage.addClearedStageId(id)
+            SE.clear.play()
         }
 
         Dom.container.querySelector("#stage-id")!.textContent = `${id}`

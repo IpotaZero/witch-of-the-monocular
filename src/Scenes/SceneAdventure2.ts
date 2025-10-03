@@ -1,8 +1,9 @@
 import { Dom } from "../Dom"
-import { getItem2, Item, itemMap } from "../Item"
+import { getItem0, getItem1, getItem2, Item, itemMap } from "../Item"
 import { LocalStorage } from "../LocalStorage"
+import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
-import { Serif } from "../utils/Serif"
+import { Ask, Serif } from "../utils/Serif"
 import { Scene } from "./Scene"
 import { Scenes } from "./Scenes"
 
@@ -21,6 +22,12 @@ export class SceneAdventure extends Scene {
     }
 
     async #setup() {
+        if (LocalStorage.getFlags().includes("土砂突破")) {
+            BGM.ffp("assets/sounds/gishiki.mp3")
+        } else {
+            BGM.ffp("assets/sounds/魔力の止水域.m4a")
+        }
+
         this.#pages.before("title", async () => {
             this.#pages.shaveBranch(1)
 
@@ -43,20 +50,42 @@ export class SceneAdventure extends Scene {
         })
 
         this.#pages.before("祭壇", async () => {
-            if (0) {
-                Serif.say(
-                    "(大きな石でできた祭壇。見つめていると不思議な気持ちになる。)",
-                    "何かをお供えすれば......もしかしたら......。",
-                )
+            if (LocalStorage.getFlags().includes("土砂突破")) {
+                Serif.say("(巨石はただそこに佇んでいる。)")
                 await Serif.wait()
+                return true
+            }
+
+            Serif.say(
+                "(大きな石でできた祭壇。見つめていると不思議な気持ちになる。)",
+                "何かをお供えすれば......もしかしたら......。",
+            )
+            await Serif.wait()
+
+            const options = ["何もしない"]
+
+            const items = LocalStorage.getItems()
+
+            if (items.includes("ベル") && items.includes("楽譜") && items.includes("ガラス瓶")) {
+                options.push("楽譜を供える")
+            }
+
+            const num = await Ask.ask(options)
+
+            if (num === "何もしない") {
+                return true
             } else {
+                BGM.ffp("assets/sounds/gishiki.mp3", { loopEndS: 80 })
+
                 Serif.say("(持ち物がひとりでに動き出し、音楽を奏で始める......。)", "(近くで大きな音がした。)")
                 await Serif.wait()
 
                 LocalStorage.addFlag("土砂突破")
-            }
 
-            return true
+                this.#update()
+
+                return true
+            }
         })
 
         this.#pages.before("蝋燭", async () => {
@@ -67,11 +96,81 @@ export class SceneAdventure extends Scene {
                 LocalStorage.addItem("ベル")
                 this.#update()
             } else {
-                Serif.say("(青い炎が揺らめいている。)")
+                Serif.say("(緑の炎が揺らめいている。)")
                 await Serif.wait()
             }
 
             return true
+        })
+
+        this.#pages.before("外", async () => {
+            const num = await Ask.ask(["外に出る", "出ない"])
+
+            if (num === "外に出る") {
+                return false
+            } else {
+                return true
+            }
+        })
+
+        this.#pages.on("外", async () => {
+            if (LocalStorage.getItems().includes("魔女")) {
+                Serif.say(
+                    "(階段を昇ると青空が見えた。)",
+                    "うっ、眩しい......。",
+                    "(鳥の囀りや、虫の声が何処かから聞こえてくる。)",
+                    "(振り返れば、屋敷はただ、森の奥に沈んでいる。)",
+                    "(それはもう、魔法のかかっていない、一つの屋敷だった。)",
+                )
+            } else {
+                Serif.say(
+                    "(階段を昇ると青空が見えた。)",
+                    "(閉ざされた屋敷の影を抜け、眩しさに目を細める。)",
+                    "(外は驚くほど静まり返っていて、全てが嘘だったかのように思えた。)",
+                    "(手元にはいくつかの物が残っている。)",
+                    "(選ばれたものと、選ばれなかったもの。)",
+                    "(振り返れば、屋敷はただ、森の奥に沈んでいる。)",
+                    "(また、獲物が来るのを待っている。)",
+                )
+            }
+
+            await Serif.wait()
+
+            LocalStorage.isCleared = true
+
+            const { SceneTitle } = await import("./SceneTitle")
+            await Scenes.goto(() => new SceneTitle(), { mode: "fade", msIn: 2000, msOut: 2000 })
+        })
+
+        this.#pages.before("魔女の扉", async () => {
+            if (LocalStorage.getFlags().includes("魔女の部屋")) {
+                return
+            }
+
+            Serif.say(
+                "(扉の向こうから何かの気配がする。)",
+                "(頭の中ではなく直接声が聞こえた。)",
+                "やあ。うまくいったみたいだね。だけど、早く出ていった方がいいよ。",
+                "言ったでしょう? この屋敷には物を持ち出せなくする魔法がかかっているんだ。",
+                "だから......私はここから動けない。",
+                "君までこの屋敷の物になってしまう前に、早く。",
+            )
+
+            Serif.wait().then(async () => {
+                if (
+                    LocalStorage.getClearedStageId().length ===
+                    getItem0.length + getItem1.length + getItem2.length - 1
+                ) {
+                    Serif.say("(得てきたものが、あなたに勇気を与えた。)", "(あなたは一歩踏み出し、扉を開けた。)")
+                    await Serif.wait()
+                    LocalStorage.addFlag("魔女の部屋")
+                    this.#pages.goto("魔女の部屋")
+                } else {
+                    Serif.say("(あなたは怖気づいて扉から一歩離れた。)")
+                    await Serif.wait()
+                    this.#pages.back(1)
+                }
+            })
         })
 
         const serifs = {
@@ -115,7 +214,19 @@ export class SceneAdventure extends Scene {
                 page.back(1, { msIn: 0, msOut: 0 })
 
                 Serif.say(`(${item}を手に入れた。)`)
+
+                LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
             })
+        })
+
+        this.#pages.on("clear-魔女", async (page) => {
+            LocalStorage.addItem("魔女")
+            this.#update()
+            page.back(1, { msIn: 0, msOut: 0 })
+
+            Serif.say(`(魔女を助けた。)`)
+
+            LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
         })
 
         const html = await (await fetch("pages/adventure2.html")).text()
@@ -168,5 +279,11 @@ export class SceneAdventure extends Scene {
             LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
             this.#setup()
         }
+
+        this.#pages.before("save", async () => {
+            LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch().slice(0, -1))
+            Serif.say("(出来事を記憶に留めた。)")
+            return true
+        })
     }
 }

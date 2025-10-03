@@ -1,29 +1,43 @@
 // src/audio/BGM.ts
+type BGMOptions = {
+    loopStartS?: number
+    loopEndS?: number
+    loop?: boolean
+    volume?: number
+    when?: number
+}
+
 export class BGM {
-    static #context: AudioContext
-    static #wholeGain: GainNode
-
+    static readonly #context: AudioContext = new AudioContext()
+    static readonly #wholeGain: GainNode = this.#context.createGain()
     static #volume = 1
-    static #initialized = false
-
     static #currentBGM: BGM | null = null
+
+    static {
+        this.#wholeGain.connect(this.#context.destination)
+    }
+
+    // instance
 
     #path: string
     #gain: GainNode
+    #localVolume: number = 1
     #ready: Promise<void>
     #source: AudioBufferSourceNode | null = null
     #isStarted = false
 
-    private constructor(path: string, options: { loopStartS?: number; loopEndS?: number } = {}) {
+    private constructor(path: string, options: BGMOptions) {
         this.#path = path
+        this.#localVolume = options.volume ?? 1
 
         this.#gain = BGM.#context.createGain()
+        this.#gain.gain.value = this.#localVolume
         this.#gain.connect(BGM.#wholeGain)
 
         this.#ready = this.#localFetch(options)
     }
 
-    async #localFetch(options: { loopStartS?: number; loopEndS?: number }) {
+    async #localFetch(options: BGMOptions) {
         const response = await fetch(this.#path)
         const arrayBuffer = await response.arrayBuffer()
         const buffer = await BGM.#context.decodeAudioData(arrayBuffer)
@@ -32,71 +46,53 @@ export class BGM {
         this.#source.buffer = buffer
         this.#source.loopStart = options.loopStartS ?? 0
         this.#source.loopEnd = options.loopEndS ?? buffer.duration
-        this.#source.loop = true
+        this.#source.loop = options.loop ?? true
         this.#source.connect(this.#gain)
     }
 
     async #localFadeOut(durationMS: number) {
-        this.#gain.gain.cancelScheduledValues(BGM.#context.currentTime)
+        this.#gain.gain.setValueAtTime(this.#localVolume, BGM.#context.currentTime)
         this.#gain.gain.linearRampToValueAtTime(0, BGM.#context.currentTime + durationMS / 1000)
 
         await new Promise((resolve) => setTimeout(resolve, durationMS))
+        this.#gain.disconnect()
 
         if (this.#isStarted) this.#source?.stop()
         this.#source?.disconnect()
     }
 
-    static init() {
-        if (this.#initialized) throw new Error("すでにinitialized!")
-        this.#initialized = true
-
-        this.#context = new AudioContext()
-        this.#wholeGain = this.#context.createGain()
-        this.#wholeGain.connect(this.#context.destination)
-    }
+    // class
 
     static getPath() {
         return this.#currentBGM ? this.#currentBGM.#path : ""
     }
 
-    static async ffp(path: string, options: { loopStartS?: number; loopEndS?: number; when?: number } = {}) {
+    static async ffp(path: string, options: BGMOptions = {}) {
         await Promise.all([this.#fadeOut(1000), this.#fetch(path, options)])
-
         if (this.getPath() === path) {
-            this.#play(options.when)
+            this.#play(options.when ?? 0)
         }
     }
 
-    static async #fetch(path: string, options: { loopStartS?: number; loopEndS?: number; when?: number }) {
+    static async #fetch(path: string, options: BGMOptions) {
         this.#currentBGM = new BGM(path, options)
         await this.#currentBGM.#ready
     }
 
-    static #play(when?: number) {
+    static #play(when: number) {
         if (!this.#currentBGM) return
-        this.#currentBGM.#source?.start(this.#context.currentTime + (when ?? 0))
+        this.#currentBGM.#source?.start(this.#context.currentTime + when)
         this.#currentBGM.#isStarted = true
     }
 
     static setVolume(volume: number) {
         this.#volume = volume
-        this.#wholeGain.gain.cancelScheduledValues(this.#context.currentTime)
         this.#wholeGain.gain.value = this.#volume
     }
 
-    static #fadeOut(durationMS: number) {
+    static async #fadeOut(durationMS: number) {
         if (!this.#currentBGM) return
-        this.#currentBGM.#localFadeOut(durationMS)
-
-        return new Promise((resolve) => setTimeout(resolve, durationMS))
-    }
-
-    static async fade(volume: number, durationMS: number) {
-        this.#wholeGain.gain.cancelScheduledValues(this.#context.currentTime)
-        this.#wholeGain.gain.setValueAtTime(this.#volume, this.#context.currentTime)
-        this.#wholeGain.gain.linearRampToValueAtTime(volume, this.#context.currentTime + durationMS / 1000)
-
-        await new Promise((resolve) => setTimeout(resolve, durationMS))
+        await this.#currentBGM.#localFadeOut(durationMS)
     }
 }
 

@@ -4,7 +4,7 @@ import { LocalStorage } from "../LocalStorage"
 import { Awaits } from "../utils/Awaits"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
-import { Serif } from "../utils/Serif"
+import { Ask, Serif } from "../utils/Serif"
 import { Scene } from "./Scene"
 import { Scenes } from "./Scenes"
 
@@ -23,6 +23,8 @@ export class SceneAdventure extends Scene {
     }
 
     async #setup() {
+        BGM.ffp("assets/sounds/魔力の止水域.m4a")
+
         this.#pages.before("title", async () => {
             this.#pages.shaveBranch(1)
 
@@ -45,22 +47,49 @@ export class SceneAdventure extends Scene {
 
             const items = LocalStorage.getItems()
 
+            Serif.say("(鍵がかかっている。)", "壊すための道具を探すか、鍵を探すかかな。")
+            await Serif.wait()
+
+            const options = ["何もしない"]
+
+            if (items.includes("ヘアピン") && !items.includes("魔導書")) {
+                options.push("ヘアピンでピッキングする")
+            }
+
             if (items.includes("ヘアピン") && items.includes("魔導書")) {
+                options.push("ヘアピンを変質させる")
+            }
+
+            if (items.includes("ぬるついたハンマー")) {
+                options.push("ハンマーでカギを壊す")
+            }
+
+            if (items.includes("ハンマー")) {
+                options.push("ハンマーでカギを壊す")
+            }
+
+            const num = await Ask.ask(options)
+
+            if (num === "何もしない") {
+                return true
+            } else if (num === "ヘアピンでピッキングする") {
+                Serif.say("(ピッキングを試みた。)", "(......失敗した。)")
+                await Serif.wait()
+                return true
+            } else if (num === "ヘアピンを変質させる") {
                 Serif.say("(魔導書に載っていた魔術でヘアピンをカギに変えて開けた。)", "黒魔術の才能がありそうだねえ。")
                 await Serif.wait()
                 LocalStorage.addFlag("寝室開放")
-            } else if (items.includes("ハンマー")) {
-                Serif.say("(ハンマーで鍵をブッ壊した。)", "やるねえ。")
-                await Serif.wait()
-                LocalStorage.addFlag("寝室開放")
-            } else if (items.includes("ぬるついたハンマー")) {
-                Serif.say("ハンマー? そんなぬるぬるじゃあ危ないよ。")
-                await Serif.wait()
-                return true
-            } else {
-                Serif.say("(鍵がかかっている。)", "壊すための道具を探すか、鍵を探すかかな。")
-                await Serif.wait()
-                return true
+            } else if (num === "ハンマーでカギを壊す") {
+                if (items.includes("ハンマー")) {
+                    Serif.say("(ハンマーで鍵をブッ壊した。)", "やるねえ。")
+                    await Serif.wait()
+                    LocalStorage.addFlag("寝室開放")
+                } else {
+                    Serif.say("ハンマー? そんなぬるぬるじゃあ危ないよ。")
+                    await Serif.wait()
+                    return true
+                }
             }
         })
 
@@ -84,6 +113,12 @@ export class SceneAdventure extends Scene {
         })
 
         this.#pages.before("窓", async () => {
+            const num = await Ask.ask(["窓から飛び降りる", "飛び降りない"])
+
+            if (num === "飛び降りない") {
+                return true
+            }
+
             Serif.say("(!)", "(足を踏み出した瞬間突然床が抜け落ちた!)")
             await Serif.wait()
 
@@ -101,12 +136,18 @@ export class SceneAdventure extends Scene {
             return true
         })
 
+        this.#pages.before("本棚-左", async () => {
+            Serif.say("(「〇〇地方の土着信仰」、「異端」)")
+            await Serif.wait()
+            return true
+        })
+
         this.#pages.before("湯舟", async () => {
             if (LocalStorage.getFlags().includes("お風呂")) {
                 Serif.say("(もう入った。)")
                 await Serif.wait()
             } else {
-                Serif.say("(空っぽの湯舟。)", "入る?", "(入ることにした。)")
+                Serif.say("(お湯が張ってある)", "入る?", "(入ることにした。)")
                 await Serif.wait()
                 await Awaits.fadeOut(Dom.container, 1000)
                 await Awaits.fadeIn(Dom.container, 1000)
@@ -173,6 +214,8 @@ export class SceneAdventure extends Scene {
                 page.back(1, { msIn: 0, msOut: 0 })
 
                 Serif.say(`(${item}を手に入れた。)`)
+
+                LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
             })
         })
 
@@ -213,5 +256,11 @@ export class SceneAdventure extends Scene {
             LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
             this.#setup()
         }
+
+        this.#pages.before("save", async () => {
+            LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch().slice(0, -1))
+            Serif.say("(出来事を記憶に留めた。)")
+            return true
+        })
     }
 }

@@ -1,2 +1,2 @@
 import{G as v,C as $}from"./Game-Dbs3negb.js";class l extends v{$setupElement(t){this.$defaultState=[3,6,5,7,1,4,2,0];let s=0;this.v(-24,-24,s++,t),this.v(0,-24,s++,t),this.v(24,-24,s++,t),this.v(-24,0,s++,t),this.v(24,0,s++,t),this.v(-24,24,s++,t),this.v(0,24,s++,t),this.v(24,24,s++,t),this.e(0,1),this.e(1,2),this.e(5,6),this.e(6,7),this.e(0,3),this.e(2,4),this.e(3,5),this.e(4,7),this.e(0,7),this.e(2,5),this.e(1,6),this.e(3,4)}v(t,s,e,i){const h=this.$createVertex(t,s,e);this.$vertices.push(h),i.appendChild(h)}e(t,s){const e=new $(this.$vertices[t],this.$vertices[s]);this.$connectors.set(e,[t,s])}}export{l as Stage};
-//# sourceMappingURL=Stage無図-NiTxF_8d.js.map
+//# sourceMappingURL=Stage魔女-NiTxF_8d.js.map

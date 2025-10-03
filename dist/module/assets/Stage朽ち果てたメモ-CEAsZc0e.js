@@ -1,2 +1,2 @@
 import{G as o,C as c}from"./Game-Dbs3negb.js";class a extends o{$setupElement(s){this.$defaultState=[3,9,10,4,7,11,8,12,1,13,14,2,15,0,5,6];for(let e=0;e<16;e++)this.v((e%4-1.5)*24,(~~(e/4)-1.5)*24,e,s);for(let e=0;e<3;e++)for(let t=0;t<4;t++)this.e(t+4*e,t+4*(e+1));for(let e=0;e<4;e++)for(let t=0;t<3;t++)this.e(t+4*e,t+4*e+1)}v(s,e,t,i){const r=this.$createVertex(s,e,t);this.$vertices.push(r),i.appendChild(r)}e(s,e){const t=new c(this.$vertices[s],this.$vertices[e]);this.$connectors.set(t,[s,e])}}export{a as Stage};
-//# sourceMappingURL=Stage薄い本-CEAsZc0e.js.map
+//# sourceMappingURL=Stage朽ち果てたメモ-CEAsZc0e.js.map

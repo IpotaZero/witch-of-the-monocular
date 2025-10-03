@@ -49,6 +49,12 @@
 
 <div class="page" id="credit">
     <button data-back="1">戻る</button>
+
+    <p>フォント: <a href="http://jikasei.me/font/kh-dotfont/" target="_blank">日比谷32(明朝体)</a></p>
+    <br />
+    <p>企画: いぽた</p>
+    <p>BGM: うめぼし</p>
+    <p>制作: <a href="https://x.com/ocu_mcr" target="_blank">MCR</a></p>
 </div>
 
 <style>
@@ -94,6 +100,7 @@
         left: 1em;
         top: 1em;
         font-size: 6dvh;
+        background-color: #111;
     }
 
     #past {
@@ -107,7 +114,7 @@
 
         padding: 4em 1em;
 
-        & button {
+        & button[data-link] {
             padding: 0.5em;
             border: whitesmoke 1px solid;
 
@@ -155,5 +162,9 @@
             transform: rotate(calc(360deg * var(--rotation)));
             opacity: 0;
         }
+    }
+
+    #credit {
+        flex-direction: column;
     }
 </style>

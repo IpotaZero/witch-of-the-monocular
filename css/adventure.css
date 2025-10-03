@@ -4,7 +4,7 @@
     width: 5em;
     height: 8em;
 
-    border: whitesmoke 1px solid;
+    border: whitesmoke 2px solid;
 
     opacity: 0;
 }
@@ -15,7 +15,7 @@
     width: 5em;
     height: 8em;
 
-    border: whitesmoke 1px solid;
+    border: whitesmoke 2px solid;
 
     opacity: 0;
 }
@@ -33,13 +33,39 @@
     & img {
         width: 100%;
         height: 100%;
+        object-fit: contain;
     }
 }
 
 #item {
-    padding-top: 4em;
+    padding: 3em 1em;
     flex-direction: column;
     flex-wrap: wrap;
+
+    z-index: 10;
+    background-color: #111e;
+
+    flex-direction: column;
+    align-items: flex-start;
+
+    flex-wrap: wrap;
+
+    gap: 1em;
+
+    width: 100dvw;
+    height: 100dvh;
+
+    & [data-back] {
+        position: absolute;
+        top: 1em;
+        left: 1em;
+    }
+
+    & button[data-link] {
+        border: whitesmoke 1px solid;
+        padding: 0.5em;
+        font-size: 5dvh;
+    }
 }
 
 .room-name {
@@ -119,33 +145,9 @@
         flex-direction: column;
         align-self: flex-start;
 
-        gap: 1em;
+        gap: 0.5em;
 
         /* border: whitesmoke 1px solid; */
-    }
-}
-
-#item {
-    z-index: 10;
-    background-color: #111e;
-
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    flex-wrap: wrap;
-
-    gap: 1em;
-
-    width: 100dvw;
-    height: 100dvh;
-
-    padding: 1em;
-
-    & [data-back] {
-        position: absolute;
-        top: 1em;
-        left: 1em;
     }
 }
 

@@ -4,6 +4,7 @@ import { LocalStorage } from "../LocalStorage"
 import { SE } from "../SE"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
+import { Ask, Serif } from "../utils/Serif"
 import { Scene } from "./Scene"
 import { Scenes } from "./Scenes"
 
@@ -23,6 +24,26 @@ export class SceneTitle extends Scene {
         BGM.ffp("assets/sounds/title.mp3")
 
         this.#pages.on("start", async () => {
+            if (LocalStorage.isCleared) {
+                if (LocalStorage.getClearedStageId().includes("魔女")) {
+                    Serif.say(
+                        "(あれからあの屋敷の話は聞かない。)",
+                        "(核となる魔女がいなくなり、力を失ったのか。)",
+                        "(屋敷で見つけたものはまだ手元にある。)",
+                        "(それだけがあの日の出来事を証明するだろう。)",
+                    )
+                } else {
+                    Serif.say(
+                        "(あの屋敷には、きっとまだ囚われたものがあるのだろう。)",
+                        "(あなたはもし時を戻せたら、と思った。)",
+                    )
+                }
+
+                await Serif.wait()
+                this.#pages.back(1)
+                return
+            }
+
             // @ts-ignore
             const modules = import.meta.glob("./SceneAdventure*")
 
@@ -68,7 +89,7 @@ export class SceneTitle extends Scene {
 
             const size = Math.random() ** 2 * 24
 
-            p.style.animationDelay = `${size / 2}s`
+            p.style.animationDelay = `${Math.random() * 8}s`
             p.style.width = `${size + 16}vh`
             p.style.animationDuration = `${Math.random() * 4 + 8}s`
             p.style.aspectRatio = "1"
@@ -163,17 +184,29 @@ export class SceneTitle extends Scene {
         }
 
         this.#pages.before("delete-adventure-data", async () => {
-            localStorage.removeItem("flags")
-            localStorage.removeItem("items")
-            localStorage.removeItem("chapter")
-            localStorage.removeItem("current-branch")
+            const num = await Ask.ask(["本当に消す", "消さない"])
+
+            if (num === "本当に消す") {
+                localStorage.removeItem("flags")
+                localStorage.removeItem("items")
+                localStorage.removeItem("chapter")
+                localStorage.removeItem("current-branch")
+                localStorage.removeItem("is-cleared")
+
+                Serif.say("(忘れた。)")
+            }
 
             return true
         })
 
         this.#pages.before("delete-data", async () => {
-            localStorage.clear()
-            await Scenes.goto(() => new SceneTitle())
+            const num = await Ask.ask(["本当に消す", "消さない"])
+
+            if (num === "本当に消す") {
+                localStorage.clear()
+                await Scenes.goto(() => new SceneTitle())
+            }
+
             return true
         })
     }

@@ -14,7 +14,7 @@
 
     <button class="serif" data-link="湯舟" style="left: 0%; top: 50%; height: 45%; width: 55%"></button>
 
-    <button class="item" data-link="ヘアピン" style="left: 70%; top: 65%; height: 5%; width: 5%">
+    <button class="item" data-link="ヘアピン" style="left: 70%; top: 65%; height: 10%; width: 10%">
         <img src="assets/images/items/ヘアピン.png" alt="" />
     </button>
 
@@ -41,13 +41,28 @@
 
     <button class="serif" data-link="おトイレ" style="left: 40%; top: 30%; height: 45%; width: 25%"></button>
 
+    <button class="item" data-link="造花" style="left: 18%; top: 65%; height: 25%; width: 25%">
+        <img src="assets/images/items/造花.png" alt="" />
+    </button>
+
     <button class="back" data-back="1">戻る</button>
 
     <span class="room-name">トイレ</span>
 </div>
 
+<div class="page" id="造花">
+    <img src="assets/images/stages/造花.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-造花" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
+</div>
+
 <div class="page" id="書斎">
     <img src="assets/images/stages/書斎.png" alt="" class="background" />
+
+    <button class="door" data-link="本棚-左" style="left: 0%; top: 0%; height: 100%; width: 40%"></button>
 
     <button class="door" data-link="書斎奥" style="left: 40%; top: 35%; height: 55%; width: 18%"></button>
 
@@ -94,9 +109,22 @@
     <button class="door" data-link="ベッド" style="left: 60%; top: 60%; height: 35%; width: 50%"></button>
     <!-- <button class="door" data-link="ベッド下" style="left: 90%; top: 90%; height: 35%; width: 50%"></button> -->
 
+    <button class="item" data-link="葛" style="left: 18%; top: 60%; height: 25%; width: 20%">
+        <img src="assets/images/items/葛.png" alt="" />
+    </button>
+
     <button class="back" data-back="1">戻る</button>
 
     <span class="room-name">寝室</span>
+</div>
+
+<div class="page" id="葛">
+    <img src="assets/images/stages/葛.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-葛" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
 </div>
 
 <div class="page" id="ベッド下">
@@ -128,6 +156,7 @@
     <div id="buttons">
         <button data-back="1">再開</button>
         <button data-link="item">アイテム</button>
+        <button data-link="save">セーブ</button>
         <button data-link="title">タイトルへ</button>
     </div>
 </div>

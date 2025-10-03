@@ -1,9 +1,10 @@
 import { Dom } from "../Dom"
 import { getItem0, Item, itemMap } from "../Item"
 import { LocalStorage } from "../LocalStorage"
+import { Awaits } from "../utils/Awaits"
 import { BGM } from "../utils/BGM"
 import { Pages } from "../utils/Pages"
-import { Serif } from "../utils/Serif"
+import { Ask, Serif } from "../utils/Serif"
 import { Scene } from "./Scene"
 import { Scenes } from "./Scenes"
 
@@ -22,6 +23,8 @@ export class SceneAdventure extends Scene {
     }
 
     async #setup() {
+        BGM.ffp("assets/sounds/魔力の止水域.m4a")
+
         this.#pages.on("first", async () => {
             if (LocalStorage.getFlags().includes("あらすじ")) return
             LocalStorage.addFlag("あらすじ")
@@ -30,6 +33,8 @@ export class SceneAdventure extends Scene {
                 '(森の中にある洋館、通称"ひとやしき"にはある噂があった。)',
                 "(そこには恐ろしい魔女がいて、一度入れば決して出てこられないというもの。)",
                 "(あなたは最近この辺りに引っ越してきたばかりでその噂を知らず森の中で迷い、その屋敷に入ってしまったのであった......。)",
+
+                "(背後の扉は閉まっている。)",
             )
 
             await Serif.wait()
@@ -43,8 +48,7 @@ export class SceneAdventure extends Scene {
                 "(頭の中から笑い声が聞こえる。)",
                 "くすくす......",
                 "この家に入ってきちゃうなんて、君は本当に馬鹿だねえ......",
-                "とはいえ鍵をかけてなかった私も悪い。",
-                "よって、君がこの家を出られるよう、手助けをしてあげよう。",
+                "まあ、君がこの家を出られるよう、手助けをしてあげよう。",
                 "私は今手が離せないから、そっちには行けないけどね。",
                 "さあ、そこの扉をくぐって......",
             )
@@ -83,14 +87,19 @@ export class SceneAdventure extends Scene {
 
             const { SceneGame } = await import("./SceneGame")
             await Scenes.goto(() => new SceneGame("1階のカギ", { from: "adventure" }), { mode: "fade" })
-            Serif.say(
-                "さて、ではこの魔法陣の説明をしよう。",
-                "各マスの中に2つ数字があるのが見えるかな?",
-                "左上の数字はそこに入るべき数字。真ん中の数字は今入っている数字だよ。",
-                "何も入っていないマスがあるのには気づいたかな?",
-                "この空白マスには線でつながった別のマスの数字をスライドさせることが出来るんだ。",
-                "線をクリックしてスライドして、すべてのマスの左上と中の数字を一致させてみよう!",
-            )
+
+            if (LocalStorage.getClearedStageId().includes("楽譜")) {
+                Serif.say("さて、ではこの魔法陣の説明をしよ......えっ知ってる? じゃあ飛ばすね。")
+            } else {
+                Serif.say(
+                    "さて、ではこの魔法陣の説明をしよう。",
+                    "各マスの中に2つ数字があるのが見えるかな?",
+                    "左上の数字はそこに入るべき数字。真ん中の数字は今入っている数字だよ。",
+                    "何も入っていないマスがあるのには気づいたかな?",
+                    "この空白マスには線でつながった別のマスの数字をスライドさせることが出来るんだ。",
+                    "線をクリックしてスライドして、すべてのマスの左上と中の数字を一致させてみよう!",
+                )
+            }
 
             return true
         })
@@ -102,6 +111,10 @@ export class SceneAdventure extends Scene {
                 page.back(1, { msIn: 0, msOut: 0 })
 
                 Serif.say(`(${item}を手に入れた。)`)
+
+                await Awaits.frame()
+
+                LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
             })
         })
 
@@ -110,6 +123,7 @@ export class SceneAdventure extends Scene {
                 LocalStorage.removeItem("空のバケツ")
                 LocalStorage.addItem("水の入ったバケツ")
                 Serif.say("(バケツに水を入れた。)")
+                this.#update()
             } else {
                 Serif.say("(水は出そうだ。)")
             }
@@ -136,23 +150,43 @@ export class SceneAdventure extends Scene {
         this.#pages.on("階段-不", async () => {
             const items = LocalStorage.getItems()
 
+            Serif.say("えぇっ!? ツタが伸びまくってるじゃん!?", "何か道具を探さなくちゃね。")
+            await Serif.wait()
+
+            const options = ["何もしない"]
+
+            if (items.includes("ライター") && !items.includes("水の入ったバケツ")) {
+                options.push("ツタを燃やす")
+            }
+
             if (items.includes("ライター") && items.includes("水の入ったバケツ")) {
-                Serif.say("(ツタを燃やしてバケツの水で消火した。)")
+                options.push("ツタを燃やして消火する")
+            }
+
+            if (items.includes("包丁")) {
+                options.push("包丁でツタを切る")
+            }
+
+            const num = await Ask.ask(options)
+
+            if (num === "何もしない") {
+                this.#pages.back(1)
+            } else if (num === "ツタを燃やす") {
+                Serif.say("ツタを燃やすの? 消火用の何かがあればいいんだけど......。")
+                await Serif.wait()
+                this.#pages.back(1)
+            } else if (num === "ツタを燃やして消火する") {
                 LocalStorage.removeItem("水の入ったバケツ")
                 LocalStorage.addItem("空のバケツ")
                 LocalStorage.addFlag("ツタを切った")
+                Serif.say("(ツタを燃やしてバケツの水で消火した。)")
                 await Serif.wait()
                 this.#nextChapter()
-            } else if (items.includes("包丁")) {
-                Serif.say("(包丁でツタを切った。)")
+            } else if (num === "包丁でツタを切る") {
                 LocalStorage.addFlag("ツタを切った")
+                Serif.say("(包丁でツタを切った。)")
                 await Serif.wait()
                 this.#nextChapter()
-            } else if (items.includes("ライター")) {
-                Serif.say("ツタを燃やすの? 消火用の何かがあればいいんだけど......。")
-                await Serif.wait()
-            } else {
-                Serif.say("えぇっ!? ツタが伸びまくってるじゃん!?", "何か道具を探さなくちゃね。")
             }
         })
 
@@ -235,5 +269,11 @@ export class SceneAdventure extends Scene {
             LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch())
             this.#setup()
         }
+
+        this.#pages.before("save", async () => {
+            LocalStorage.setCurrentBranch(this.#pages.getCurrentBranch().slice(0, -1))
+            Serif.say("(出来事を記憶に留めた。)")
+            return true
+        })
     }
 }

@@ -91,6 +91,15 @@ export class LocalStorage {
     static setVolume(v: { bgm: number; se: number }) {
         localStorage.setItem("volume", JSON.stringify(v))
     }
+
+    static set isCleared(isCleared: boolean) {
+        localStorage.setItem("is-cleared", isCleared + "")
+    }
+
+    static get isCleared() {
+        const c = localStorage.getItem("is-cleared")
+        return c ? Boolean(c) : false
+    }
 }
 
 type Flag =
@@ -106,3 +115,4 @@ type Flag =
     | "寝室"
     | "地下"
     | "土砂突破"
+    | "魔女の部屋"

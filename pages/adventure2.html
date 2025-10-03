@@ -1,12 +1,25 @@
 <div class="page" id="first">
     <img src="assets/images/stages/牢屋-0.png" alt="" class="background" />
 
+    <button class="item" data-link="朽ち果てたメモ" style="left: 15%; top: 75%; height: 15%; width: 15%">
+        <img src="assets/images/items/朽ち果てたメモ.png" alt="" />
+    </button>
+
     <button class="serif" data-link="大穴" style="left: 20%; top: 0%; height: 10%; width: 30%"></button>
     <button class="serif" data-link="格子" style="left: 10%; top: 20%; height: 55%; width: 35%"></button>
     <button class="serif" data-link="扉" style="left: 45%; top: 20%; height: 55%; width: 20%"></button>
     <button class="serif" data-link="牢屋-1" style="left: 65%; top: 55%; height: 15%; width: 55%"></button>
 
     <span class="room-name">牢屋</span>
+</div>
+
+<div class="page" id="朽ち果てたメモ">
+    <img src="assets/images/stages/朽ち果てたメモ.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-朽ち果てたメモ" data-ms-in="0">とる</button>
+        <button data-back="1">とらない</button>
+    </div>
 </div>
 
 <div class="page" id="牢屋-1">
@@ -122,9 +135,44 @@
 <div class="page" id="地下通路-可">
     <img src="assets/images/stages/地下通路-可.png" alt="" class="background" />
 
+    <button class="door" data-link="魔女の扉" style="left: 60%; top: 35%; height: 50%; width: 11%"></button>
+
+    <button class="door" data-link="外" style="left: 38%; top: 30%; height: 45%; width: 20%"></button>
+
     <button class="back" data-back="1">戻る</button>
 
     <span class="room-name">地下通路</span>
+</div>
+
+<div class="page" id="外">
+    <img src="assets/images/stages/外.png" alt="" class="background" />
+</div>
+
+<div class="page" id="魔女の扉">
+    <img src="assets/images/stages/扉.png" alt="" class="background" />
+
+    <button class="door" data-link="魔女の部屋" style="left: 35%; top: 0%; height: 65%; width: 30%"></button>
+
+    <button class="back" data-back="1">戻る</button>
+</div>
+
+<div class="page" id="魔女の部屋">
+    <img src="assets/images/stages/魔女の部屋.png" alt="" class="background" />
+
+    <button class="item" data-link="魔女" style="left: 35%; top: 40%; width: auto; height: 50%">
+        <img src="assets/images/items/魔女.png" alt="" />
+    </button>
+
+    <button class="back" data-back="1">戻る</button>
+</div>
+
+<div class="page" id="魔女">
+    <img src="assets/images/stages/魔女.png" alt="" class="background" />
+
+    <div class="options">
+        <button data-link="get-魔女" data-ms-in="0">助ける</button>
+        <button data-back="1">助けない</button>
+    </div>
 </div>
 
 <button id="update">UPDATE</button>
@@ -135,6 +183,7 @@
     <div id="buttons">
         <button data-back="1">再開</button>
         <button data-link="item">アイテム</button>
+        <button data-link="save">セーブ</button>
         <button data-link="title">タイトルへ</button>
     </div>
 </div>

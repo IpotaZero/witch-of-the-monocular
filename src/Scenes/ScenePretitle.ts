@@ -26,7 +26,6 @@ export class ScenePretitle extends Scene {
         await Awaits.ok()
 
         const { SceneTitle } = await import("./SceneTitle")
-
-        await Scenes.goto(() => new SceneTitle())
+        await Scenes.goto(() => new SceneTitle(), { mode: "fade", msOut: 1000 })
     }
 }
