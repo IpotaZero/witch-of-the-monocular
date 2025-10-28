@@ -154,6 +154,9 @@ export class SceneTitle extends Scene {
         stages.forEach((id) => {
             if (!cleared.includes(id)) {
                 past.innerHTML += `<button data-link="stage-${id}" class="uncleared-stage">${id}</button>`
+                this.#pages.before(`stage-${id}`, async () => {
+                    return true
+                })
             } else {
                 past.innerHTML += `<button data-link="stage-${id}">${id}</button>`
                 this.#pages.before(`stage-${id}`, async () => {
