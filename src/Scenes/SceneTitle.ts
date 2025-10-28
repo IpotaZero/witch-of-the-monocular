@@ -37,6 +37,9 @@ export class SceneTitle extends Scene {
                         "(あの屋敷には、きっとまだ囚われたものがあるのだろう。)",
                         "(あなたはもし時を戻せたら、と思った。)",
                     )
+
+                    document.querySelector("[data-link=setting]")!.classList.add("yurayura")
+                    document.querySelector("[data-link=delete-adventure-data]")!.classList.add("yurayura")
                 }
 
                 await Serif.wait()

@@ -122,7 +122,7 @@
 }
 
 .yurayura {
-    animation: theta 0.5s linear infinite;
+    animation: theta 0.4s linear infinite;
     transform: translate(calc(sin(var(--theta) * 3) * 0.2dvh), calc(sin(var(--theta) * 2) * 0.2dvh));
 }
 
