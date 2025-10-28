@@ -197,6 +197,9 @@ export class SceneTitle extends Scene {
                 localStorage.removeItem("is-cleared")
 
                 Serif.say("(忘れた。)")
+
+                document.querySelector("[data-link=setting]")!.classList.remove("yurayura")
+                document.querySelector("[data-link=delete-adventure-data]")!.classList.remove("yurayura")
             }
 
             return true
