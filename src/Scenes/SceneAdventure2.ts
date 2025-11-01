@@ -46,7 +46,7 @@ export class SceneAdventure extends Scene {
         })
 
         this.#pages.on("地下通路-不", () => {
-            Serif.say("(階段から雪崩れ込んだ土砂が道を塞いでいる。)", "そんな。")
+            Serif.say("(階段から雪崩れ込んだ土砂が道を塞いでいる。)", "そんな。", "......何か方法を......探そうか。")
         })
 
         this.#pages.before("祭壇", async () => {

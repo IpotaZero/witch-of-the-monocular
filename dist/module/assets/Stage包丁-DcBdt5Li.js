@@ -1,2 +1,2 @@
 import{G as c,C as r}from"./Game-Dbs3negb.js";class a extends c{$setupElement(s){this.$defaultState=[1,2,4,5,3,0];for(let e=0;e<6;e++){const t=this.$createVertex((e%3-1)*26,(~~(e/3)-.5)*26,e);this.$vertices.push(t),s.appendChild(t)}[[0,1],[1,2],[3,4],[4,5],[0,3],[1,4],[2,5]].forEach(([e,t])=>{this.$connectors.set(new r(this.$vertices[e],this.$vertices[t]),[e,t])})}}export{a as Stage};
-//# sourceMappingURL=Stageライター-DcBdt5Li.js.map
+//# sourceMappingURL=Stage包丁-DcBdt5Li.js.map

@@ -3,24 +3,44 @@ import { Game } from "../Games/Game"
 
 export class Stage extends Game {
     protected override $setupElement(container: Element) {
-        this.$defaultState = [1, 2, 4, 3, 0]
+        this.$defaultState = [0, 7, 3, 2, 5, 6, 4, 1]
 
-        for (let i = 0; i < 5; i++) {
-            const vertex = this.$createVertex(
-                Math.sin(2 * Math.PI * (i / 5)) * 26,
-                -Math.cos(2 * Math.PI * (i / 5)) * 26,
-                i,
-            )
-            this.$vertices.push(vertex)
-            container.appendChild(vertex)
-        }
+        let i = 0
 
-        for (let i = 0; i < 5; i++) {
-            const connector = new Connector(this.$vertices[i], this.$vertices[(i + 1) % 5])
-            this.$connectors.set(connector, [i, (i + 1) % 5])
-        }
+        this.v(-32, -32, i++, container)
+        this.v(16, -16, i++, container)
+        this.v(32, 32, i++, container)
+        this.v(-16, 16, i++, container)
 
-        const connector = new Connector(this.$vertices[1], this.$vertices[4])
-        this.$connectors.set(connector, [1, 4])
+        this.v(32, -32, i++, container)
+        this.v(16, 16, i++, container)
+        this.v(-32, 32, i++, container)
+        this.v(-16, -16, i++, container)
+
+        this.e(0, 1)
+        this.e(1, 2)
+        this.e(2, 3)
+        this.e(3, 0)
+
+        this.e(4, 5)
+        this.e(5, 6)
+        this.e(6, 7)
+        this.e(7, 4)
+
+        this.e(0, 4)
+        this.e(4, 2)
+        this.e(2, 6)
+        this.e(6, 0)
+    }
+
+    v(x: number, y: number, value: number, container: Element) {
+        const vertex = this.$createVertex(x, y, value)
+        this.$vertices.push(vertex)
+        container.appendChild(vertex)
+    }
+
+    e(i: number, j: number, arrow = false) {
+        const connector = new Connector(this.$vertices[i], this.$vertices[j], { arrow })
+        this.$connectors.set(connector, [i, j])
     }
 }

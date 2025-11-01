@@ -1,2 +1,2 @@
 import{G as v,C as $}from"./Game-Dbs3negb.js";class c extends v{$setupElement(s){this.$defaultState=[0,7,3,2,5,6,4,1];let t=0;this.v(-32,-32,t++,s),this.v(16,-16,t++,s),this.v(32,32,t++,s),this.v(-16,16,t++,s),this.v(32,-32,t++,s),this.v(16,16,t++,s),this.v(-32,32,t++,s),this.v(-16,-16,t++,s),this.e(0,1),this.e(1,2),this.e(2,3),this.e(3,0),this.e(4,5),this.e(5,6),this.e(6,7),this.e(7,4),this.e(0,4),this.e(4,2),this.e(2,6),this.e(6,0)}v(s,t,e,h){const i=this.$createVertex(s,t,e);this.$vertices.push(i),h.appendChild(i)}e(s,t,e=!1){const h=new $(this.$vertices[s],this.$vertices[t],{arrow:e});this.$connectors.set(h,[s,t])}}export{c as Stage};
-//# sourceMappingURL=Stage鉢-BCPfpKmk.js.map
+//# sourceMappingURL=Stage空のバケツ-BCPfpKmk.js.map
