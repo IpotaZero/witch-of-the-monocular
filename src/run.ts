@@ -8,6 +8,10 @@ Serif.init()
 Dom.init()
 
 document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get("delete") === "true") {
+        localStorage.clear()
+    }
     Scenes.init(new ScenePretitle())
 })
 
