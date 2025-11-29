@@ -1,22 +1,37 @@
 import { Item } from "./Item"
 
 export class LocalStorage {
+    private static readonly DATA_KEY = "wotm-data"
+
+    private static getData(): Record<string, any> {
+        const data = localStorage.getItem(this.DATA_KEY)
+        return data ? JSON.parse(data) : {}
+    }
+
+    private static setData(data: Record<string, any>) {
+        localStorage.setItem(this.DATA_KEY, JSON.stringify(data))
+    }
+
     static getChapter(): number {
-        const c = localStorage.getItem("chapter")
-        return c ? JSON.parse(c) : 0
+        const data = this.getData()
+        return data.chapter ?? 0
     }
 
     static setChapter(chapter: number) {
-        localStorage.setItem("chapter", `${chapter}`)
+        const data = this.getData()
+        data.chapter = chapter
+        this.setData(data)
     }
 
     static getCurrentBranch(): string[] {
-        const c = localStorage.getItem("current-branch")
-        return c ? JSON.parse(c) : []
+        const data = this.getData()
+        return data.currentBranch ?? []
     }
 
     static setCurrentBranch(branch: string[]) {
-        localStorage.setItem("current-branch", JSON.stringify(branch))
+        const data = this.getData()
+        data.currentBranch = branch
+        this.setData(data)
     }
 
     static addBranch(p: string) {
@@ -26,12 +41,14 @@ export class LocalStorage {
     }
 
     static getItems(): Item[] {
-        const items = localStorage.getItem("items")
-        return items ? JSON.parse(items) : []
+        const data = this.getData()
+        return data.items ?? []
     }
 
     static setItems(items: Item[]) {
-        localStorage.setItem("items", JSON.stringify(items))
+        const data = this.getData()
+        data.items = items
+        this.setData(data)
     }
 
     static removeItem(item: Item) {
@@ -48,12 +65,14 @@ export class LocalStorage {
     }
 
     static getFlags(): Flag[] {
-        const items = localStorage.getItem("flags")
-        return items ? JSON.parse(items) : []
+        const data = this.getData()
+        return data.flags ?? []
     }
 
     static setFlags(items: Flag[]) {
-        localStorage.setItem("flags", JSON.stringify(items))
+        const data = this.getData()
+        data.flags = items
+        this.setData(data)
     }
 
     static addFlag(item: Flag) {
@@ -66,39 +85,41 @@ export class LocalStorage {
         const c = this.getClearedStageId()
         if (!c.includes(id)) {
             c.push(id)
-            localStorage.setItem("cleared-stages", JSON.stringify(c))
+            const data = this.getData()
+            data.clearedStages = c
+            this.setData(data)
         }
     }
 
     static getClearedStageId(): Item[] {
-        const c = localStorage.getItem("cleared-stages")
-        return c ? JSON.parse(c) : []
+        const data = this.getData()
+        return data.clearedStages ?? []
     }
 
     static getVolume(): { bgm: number; se: number } {
-        const c = localStorage.getItem("volume")
-
-        if (!c) {
-            return {
-                bgm: 9,
-                se: 9,
-            }
-        }
-
-        return JSON.parse(c)
+        const data = this.getData()
+        return data.volume ?? { bgm: 9, se: 9 }
     }
 
     static setVolume(v: { bgm: number; se: number }) {
-        localStorage.setItem("volume", JSON.stringify(v))
+        const data = this.getData()
+        data.volume = v
+        this.setData(data)
     }
 
     static set isCleared(isCleared: boolean) {
-        localStorage.setItem("is-cleared", isCleared + "")
+        const data = this.getData()
+        data.isCleared = isCleared
+        this.setData(data)
     }
 
     static get isCleared() {
-        const c = localStorage.getItem("is-cleared")
-        return c ? Boolean(c) : false
+        const data = this.getData()
+        return data.isCleared ?? false
+    }
+
+    static clear() {
+        localStorage.removeItem(this.DATA_KEY)
     }
 }
 
