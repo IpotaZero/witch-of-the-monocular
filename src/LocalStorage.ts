@@ -118,6 +118,17 @@ export class LocalStorage {
         return data.isCleared ?? false
     }
 
+    static clearAdventure() {
+        const c = this.getData()
+        delete c["flags"]
+        delete c["items"]
+        delete c["chapter"]
+        delete c["currentBranch"]
+        delete c["isCleared"]
+
+        this.setData(c)
+    }
+
     static clear() {
         localStorage.removeItem(this.DATA_KEY)
     }

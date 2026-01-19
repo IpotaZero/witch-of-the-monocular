@@ -193,11 +193,7 @@ export class SceneTitle extends Scene {
             const num = await Ask.ask(["本当に消す", "消さない"])
 
             if (num === "本当に消す") {
-                localStorage.removeItem("flags")
-                localStorage.removeItem("items")
-                localStorage.removeItem("chapter")
-                localStorage.removeItem("current-branch")
-                localStorage.removeItem("is-cleared")
+                LocalStorage.clearAdventure()
 
                 Serif.say("(忘れた。)")
 
@@ -212,7 +208,7 @@ export class SceneTitle extends Scene {
             const num = await Ask.ask(["本当に消す", "消さない"])
 
             if (num === "本当に消す") {
-                localStorage.clear()
+                LocalStorage.clear()
                 await Scenes.goto(() => new SceneTitle())
             }
 
